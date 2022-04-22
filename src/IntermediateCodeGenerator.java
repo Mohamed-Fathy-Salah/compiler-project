@@ -18,12 +18,9 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
 
         for (int i = 0 ;i < indent;i++)
             s.append("\t");
-        s.append(str);
+        s.append(str + "\n");
 
-        System.out.println(s);
-
-        // TODO : fix not appending to the file
-        // FileWrite.getInstance().write(s.toString());
+        FileWrite.Singleton().append(s.toString());
     }
     private void exitPrint(String str) {
         indent--;

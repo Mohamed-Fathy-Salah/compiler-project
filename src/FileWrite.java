@@ -1,29 +1,27 @@
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 class FileWrite {
+    private StringBuilder str;
     private static FileWrite single_instance = null;
-    PrintWriter out;
 
+    private FileWrite() { str = new StringBuilder(); }
 
-    private FileWrite() {
-        String fileName = "output/example3.java";
-        try {
-            FileWriter fw = new FileWriter(fileName, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            out = new PrintWriter(bw);
-        }catch (Exception ex){}
-    }
-
-    public static FileWrite getInstance() {
+    public static FileWrite Singleton() {
         if (single_instance == null) {
             single_instance = new FileWrite();
         }
         return single_instance;
     }
 
-    public void write (String str) { out.println(str); }
+    public void append (String str) { this.str.append(str); }
 
-    public void write (Integer x) { write(x.toString()); }
+    public void write (String path) {
+        try {
+            Files.write(Paths.get(path), str.toString().getBytes());
+        }catch (IOException ex){
+            System.out.println(ex.getMessage());
+        }
+    }
 }
