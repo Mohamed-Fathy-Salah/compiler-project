@@ -1,29 +1,29 @@
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 class FileWrite {
-    private Path path;
     private static FileWrite single_instance = null;
- 
+    PrintWriter out;
+
+
     private FileWrite() {
-        this.path = Paths.get("out.txt");
+        String fileName = "output/example3.java";
+        try {
+            FileWriter fw = new FileWriter(fileName, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            out = new PrintWriter(bw);
+        }catch (Exception ex){}
     }
- 
-    public static FileWrite Singleton() {
+
+    public static FileWrite getInstance() {
         if (single_instance == null) {
             single_instance = new FileWrite();
         }
         return single_instance;
     }
 
-    public void write (String str) {
-        try {
-            Files.write(this.path, str.getBytes());
-        }catch (IOException ex){
-            System.out.println(ex.getMessage());
-        }
-    }
+    public void write (String str) { out.println(str); }
+
+    public void write (Integer x) { write(x.toString()); }
 }

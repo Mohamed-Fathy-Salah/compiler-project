@@ -479,26 +479,30 @@ localTypeDeclaration
     | ';'
     ;
 
+// separated them for ease of use
+ifBranch : IF parExpression statement ;
+elseBranch : ELSE statement ;
+
 statement
-    : blockLabel=block                                                      #blkStatement
-    | ASSERT expression (':' expression)? ';'                               #assertStatement
-    | IF parExpression statement (ELSE statement)?                          #ifStatement
-    | FOR '(' forControl ')' statement                                      #forStatement
-    | WHILE parExpression statement                                         #whileStatement
-    | DO statement WHILE parExpression ';'                                  #doWhileStatement
-    | TRY block (catchClause+ finallyBlock? | finallyBlock)                 #tryStatement
-    | TRY resourceSpecification block catchClause* finallyBlock?            #tryStatement
-    | SWITCH parExpression '{' switchBlockStatementGroup* switchLabel* '}'  #switchStatement
-    | SYNCHRONIZED parExpression block                                      #syncStatement
-    | RETURN expression? ';'                                                #returnStatement
-    | THROW expression ';'                                                  #throwStatement
-    | BREAK identifier? ';'                                                 #BreakStatement
-    | CONTINUE identifier? ';'                                              #continueStatement
-    | YIELD expression ';'                                                  #YieldStatement // Java17
-    | SEMI                                                                  #semiStatement
-    | statementExpression=expression ';'                                    #exprStatement
-    | switchExpression ';'?                                                 #switchExprStatement // Java17
-    | identifierLabel=identifier ':' statement                              #identifierStatement
+    : blockLabel=block
+    | ASSERT expression (':' expression)? ';'
+    | ifBranch elseBranch?
+    | FOR '(' forControl ')' statement
+    | WHILE parExpression statement
+    | DO statement WHILE parExpression ';'
+    | TRY block (catchClause+ finallyBlock? | finallyBlock)
+    | TRY resourceSpecification block catchClause* finallyBlock?
+    | SWITCH parExpression '{' switchBlockStatementGroup* switchLabel* '}'
+    | SYNCHRONIZED parExpression block
+    | RETURN expression? ';'
+    | THROW expression ';'
+    | BREAK identifier? ';'
+    | CONTINUE identifier? ';'
+    | YIELD expression ';' // Java17
+    | SEMI
+    | statementExpression=expression ';'
+    | switchExpression ';'? // Java17
+    | identifierLabel=identifier ':' statement
     ;
 
 catchClause
