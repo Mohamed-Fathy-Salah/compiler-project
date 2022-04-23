@@ -38,3 +38,33 @@ while ((x == 0)) {
 		} while((true));
 	}
 }
+try {
+	FileWrite.getInstance().write(11);
+	x++;
+	try {
+		FileWrite.getInstance().write(12);
+		y--;
+	}
+	catch (Exception ex) {
+		FileWrite.getInstance().write(13);
+		z+=10;
+	}
+}
+catch (Exception ex) {
+	FileWrite.getInstance().write(14);
+	System.out.println("why");
+}
+finally {
+	FileWrite.getInstance().write(15);
+	try {
+		FileWrite.getInstance().write(16);
+		if (x==0) {
+			FileWrite.getInstance().write(17);
+			x--;
+		}
+	}
+	finally {
+		FileWrite.getInstance().write(18);
+		System.out.println("finally");
+	}
+}
