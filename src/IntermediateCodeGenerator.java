@@ -97,9 +97,9 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
 
     // Try
     @Override
-    public void enterTry(JavaParser.CatchClauseContext ctx) { enterPrint("try {");}
+    public void enterTryBlock(JavaParser.CatchClauseContext ctx) { enterPrint("try {");}
     @Override
-    public void exitTry(JavaParser.CatchClauseContext ctx) { exitPrint("}");}
+    public void exitTryBlock(JavaParser.CatchClauseContext ctx) { exitPrint("}");}
     // catch
     @Override
     public void enterCatchClause(JavaParser.CatchClauseContext ctx) { enterPrint("catch " + tokens.getText(ctx.catchIdentifier()) + " {");}
