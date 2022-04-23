@@ -45,9 +45,6 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
             case "do" :
                 enterPrint("do {");
                 break;
-            case "try" :
-                enterPrint();
-                break;
             case "switch" :
                 break;
             default:
@@ -94,22 +91,25 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
         exitPrint("}");
     }
 
-
     // Try
     @Override
-    public void enterTryBlock(JavaParser.CatchClauseContext ctx) { enterPrint("try {");}
+    public void enterTryBlock(JavaParser.TryBlockContext ctx) { enterPrint("try {"); }
+
     @Override
-    public void exitTryBlock(JavaParser.CatchClauseContext ctx) { exitPrint("}");}
+    public void exitTryBlock(JavaParser.TryBlockContext ctx) { exitPrint("}"); }
+
     // catch
     @Override
     public void enterCatchClause(JavaParser.CatchClauseContext ctx) { enterPrint("catch " + tokens.getText(ctx.catchIdentifier()) + " {");}
+
     @Override
     public void exitCatchClause(JavaParser.CatchClauseContext ctx) { exitPrint("}");}
+
     // finally
     @Override
     public void enterFinallyBlock(JavaParser.FinallyBlockContext ctx) { enterPrint("finally {");}
+
     @Override
     public void exitFinallyBlock(JavaParser.FinallyBlockContext ctx) { exitPrint("}"); }
-
 }
 
