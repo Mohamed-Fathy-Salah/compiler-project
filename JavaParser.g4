@@ -490,8 +490,8 @@ statement
     | FOR '(' forControl ')' statement
     | WHILE parExpression statement
     | DO statement WHILE parExpression ';'
-    | TRY block (catchClause+ finallyBlock? | finallyBlock)
-    | TRY resourceSpecification block catchClause* finallyBlock?
+    | tryBlock (catchClause+ finallyBlock? | finallyBlock)
+    | tryBlock catchClause* finallyBlock?
     | SWITCH parExpression '{' switchBlockStatementGroup* switchLabel* '}'
     | SYNCHRONIZED parExpression block
     | RETURN expression? ';'
@@ -503,6 +503,11 @@ statement
     | statementExpression=expression ';'
     | switchExpression ';'? // Java17
     | identifierLabel=identifier ':' statement
+    ;
+
+tryBlock
+    : TRY block
+    | TRY resourceSpecification block
     ;
 
 catchClause
