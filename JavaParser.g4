@@ -506,7 +506,11 @@ statement
     ;
 
 catchClause
-    : CATCH '(' variableModifier* catchType identifier ')' block
+    : CATCH catchIdentifier block
+    ;
+
+catchIdentifier
+    :  '(' variableModifier* catchType identifier ')'
     ;
 
 catchType

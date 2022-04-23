@@ -46,6 +46,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
                 enterPrint("do {");
                 break;
             case "try" :
+                enterPrint("try {");
                 break;
             case "switch" :
                 break;
@@ -70,6 +71,9 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
             case "do" :
                 exitPrint("} while(" + tokens.getText(ctx.parExpression()) + ");");
                 break;
+            case "try" :
+                exitPrint("}");
+                break;
         }
     }
 
@@ -92,5 +96,17 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     public void exitElseBranch(JavaParser.ElseBranchContext ctx) {
         exitPrint("}");
     }
+
+    // catch
+    @Override
+    public void enterCatchClause(JavaParser.CatchClauseContext ctx) { enterPrint("catch " + tokens.getText(ctx.catchIdentifier()) + " {");}
+    @Override
+    public void exitCatchClause(JavaParser.CatchClauseContext ctx) { exitPrint("}"}
+    // finally
+    @Override
+    public void enterFinallyBlock(JavaParser.FinallyBlockContext ctx) { enterPrint("finally {");}
+    @Override
+    public void exitFinallyBlock(JavaParser.FinallyBlockContext ctx) { exitPrint("}"); }
+
 }
 
