@@ -94,7 +94,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
 
     @Override
     public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) {
-        print("import " + ctx.getText());
+        print("import " + ctx.getText().substring(6));
 
     }
 
