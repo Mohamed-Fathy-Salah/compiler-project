@@ -95,39 +95,23 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
 
     @Override
     public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-        String type = tokens.getText(ctx.typeTypeOrVoid());
-        String args = tokens.getText(ctx.formalParameters());
-        String thrown = " ";
+        String thrown = (ctx.THROWS() != null) ?
+                " " + ctx.THROWS() + " " + ctx.qualifiedNameList().getText() : "";
 
-        if ( ctx.THROWS() != null ){
-            thrown = ctx.THROWS()+" "+ctx.qualifiedNameList().getText();
-        }
-
-        enterPrint(type+" "+ctx.identifier().getText()+args+thrown +"{");
+        enterPrint(ctx.typeTypeOrVoid().getText() + " " +
+                ctx.identifier().getText() + " " +
+                tokens.getText(ctx.formalParameters()) +
+                thrown + " {");
     }
 
     @Override
     public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-        if(ctx.identifier().getText().equals("main")){
+        if(ctx.identifier().getText().equals("main"))
             print("FileWrite.Singleton().write(\"out/runblocks.txt\");");
-        }
+
         exitPrint("}");
     }
-    @Override
-    public void enterGenericMethodDeclaration(JavaParser.GenericMethodDeclarationContext ctx){
-        String parm = tokens.getText(ctx.typeParameters());
-        String method = tokens.getText(ctx.methodDeclaration());
-        enterPrint(parm+method);
-    }
-    @Override
-    public void
-    exitGenericMethodDeclaration(JavaParser.GenericMethodDeclarationContext ctx){
 
-    }
     @Override
-    public void enterMethodCall(JavaParser.MethodCallContext ctx) {
-
-    }
+    public void enterModifier(JavaParser.ModifierContext ctx) { print(ctx.getText() + " "); }
 }
-
-
