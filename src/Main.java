@@ -15,9 +15,14 @@ public class Main {
 
         ParseTree tree = parser.compilationUnit();
         ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(new IntermediateCodeGenerator(parser), tree);
+
+        TokenStreamRewriter rewriter = new TokenStreamRewriter(tokens);
+
+        walker.walk(new IntermediateCodeGenerator(rewriter), tree);
 
         FileWrite.Singleton().write("out/" + fileName);
+
+        System.out.println(rewriter.getText());
 
         System.out.println("done");
     }

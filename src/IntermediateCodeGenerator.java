@@ -1,124 +1,37 @@
-import org.antlr.v4.runtime.TokenStream;
+import org.antlr.v4.runtime.TokenStreamRewriter;
 
 public class IntermediateCodeGenerator extends JavaParserBaseListener {
+    private final TokenStreamRewriter rewriter;
     private int blockNumber = 0;
-    private int indent = 0;
-    private final TokenStream tokens;
 
-    public IntermediateCodeGenerator (JavaParser parser) {this.tokens = parser.getTokenStream();}
+    public IntermediateCodeGenerator (TokenStreamRewriter rewriter) {this.rewriter = rewriter;}
 
-    private void enterPrint(String str) {
-        print(str);
-        indent++;
-        print("FileWrite.getInstance().write(" + blockNumber++ + ");");
-    }
+    private String getBlock() {return "FileWrite.Singleton().append(" + blockNumber++ + ");\n";}
 
-    private void print(String str) {
-        String s = "\t".repeat(indent) +
-                str + "\n";
-
-        FileWrite.Singleton().append(s);
-    }
-
-    private void exitPrint(String str) {
-        indent--;
-        print(str);
+    @Override
+    public void enterBlock(JavaParser.BlockContext ctx) {
+        rewriter.insertBefore(ctx.blockStatement(0).start, getBlock());
     }
 
     @Override
     public void enterStatement(JavaParser.StatementContext ctx) {
-        String text = ctx.getChild(0).getText();
+        switch (ctx.getChild(0).getText()) {
+            case "if","for","while","do" : {
+                if (!ctx.statement(0).start.getText().equals("{")) {
+                   rewriter.insertBefore(ctx.statement(0).start, "{ \n" + getBlock());
+                   rewriter.insertAfter(ctx.statement(0).stop, "}");
+                }
+            }
 
-        // skip blocks & if statements
-        if (text.charAt(0) == '{' || ctx.ifBranch() != null || ctx.tryBlock() != null)
-            return;
-
-        switch (text) {
-            case "for" :
-                enterPrint("for (" + tokens.getText(ctx.forControl()) + ") {");
-                break;
-            case "while" :
-                enterPrint("while (" + tokens.getText(ctx.parExpression()) + ") {");
-                break;
-            case "do" :
-                enterPrint("do {");
-                break;
-            case "switch" :
-                break;
-            default:
-                print(ctx.getText());
+            }
         }
-    }
+
 
     @Override
     public void exitStatement(JavaParser.StatementContext ctx) {
-        String text = ctx.getChild(0).getText();
-
-        // skip blocks & if statements
-        if (text.charAt(0) == '{' || ctx.ifBranch() != null || ctx.tryBlock() != null)
-            return;
-
-        switch (text) {
-            case "for", "while" -> exitPrint("}");
-            case "do" -> exitPrint("} while(" + tokens.getText(ctx.parExpression()) + ");");
+        if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null && !ctx.statement(1).start.getText().equals("{")){
+                rewriter.insertBefore(ctx.statement(1).start, "{ \n" + getBlock());
+                rewriter.insertAfter(ctx.statement(1).stop, "}");
         }
     }
-
-    @Override
-    public void enterIfBranch(JavaParser.IfBranchContext ctx) { enterPrint("if " + tokens.getText(ctx.parExpression()) + " {"); }
-
-    @Override
-    public void exitIfBranch(JavaParser.IfBranchContext ctx) { exitPrint("}"); }
-
-    @Override
-    public void enterElseBranch(JavaParser.ElseBranchContext ctx) { enterPrint("else {"); }
-
-    @Override
-    public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-        String thrown = (ctx.THROWS() != null) ?
-                " " + ctx.THROWS() + " " + ctx.qualifiedNameList().getText() : "";
-
-        enterPrint(ctx.typeTypeOrVoid().getText() + " " +
-                ctx.identifier().getText() + " " +
-                tokens.getText(ctx.formalParameters()) +
-                thrown + " {");
-    }
-
-    @Override
-    public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
-        if(ctx.identifier().getText().equals("main"))
-            print("FileWrite.Singleton().write(\"out/runblocks.txt\");");
-
-        exitPrint("}");
-    }
-
-    @Override
-    public void enterModifier(JavaParser.ModifierContext ctx) { print(ctx.getText() + " "); }
-
-    @Override
-    public void exitElseBranch(JavaParser.ElseBranchContext ctx) { exitPrint("}"); }
-
-    @Override
-    public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) { print("import " + ctx.getText().substring(6)); }
-
-    // Try
-    @Override
-    public void enterTryBlock(JavaParser.TryBlockContext ctx) { enterPrint("try {"); }
-
-    @Override
-    public void exitTryBlock(JavaParser.TryBlockContext ctx) { exitPrint("}"); }
-
-    // catch
-    @Override
-    public void enterCatchClause(JavaParser.CatchClauseContext ctx) { enterPrint("catch " + tokens.getText(ctx.catchIdentifier()) + " {");}
-
-    @Override
-    public void exitCatchClause(JavaParser.CatchClauseContext ctx) { exitPrint("}");}
-
-    // finally
-    @Override
-    public void enterFinallyBlock(JavaParser.FinallyBlockContext ctx) { enterPrint("finally {");}
-
-    @Override
-    public void exitFinallyBlock(JavaParser.FinallyBlockContext ctx) { exitPrint("}"); }
 }
