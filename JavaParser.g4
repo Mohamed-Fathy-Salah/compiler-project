@@ -490,8 +490,8 @@ statement
     | FOR '(' forControl ')' statement
     | WHILE parExpression statement
     | DO statement WHILE parExpression ';'
-    | TRY block (catchClause+ finallyBlock? | finallyBlock)
-    | TRY resourceSpecification block catchClause* finallyBlock?
+    | tryBlock (catchClause+ finallyBlock? | finallyBlock)
+    | tryBlock catchClause* finallyBlock?
     | SWITCH parExpression '{' switchBlockStatementGroup* switchLabel* '}'
     | SYNCHRONIZED parExpression block
     | RETURN expression? ';'
@@ -505,8 +505,17 @@ statement
     | identifierLabel=identifier ':' statement
     ;
 
+tryBlock
+    : TRY block
+    | TRY resourceSpecification block
+    ;
+
 catchClause
-    : CATCH '(' variableModifier* catchType identifier ')' block
+    : CATCH catchIdentifier block
+    ;
+
+catchIdentifier
+    :  '(' variableModifier* catchType identifier ')'
     ;
 
 catchType

@@ -33,7 +33,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
         String text = ctx.getChild(0).getText();
 
         // skip blocks & if statements
-        if (text.charAt(0) == '{' || ctx.ifBranch() != null)
+        if (text.charAt(0) == '{' || ctx.ifBranch() != null || ctx.tryBlock() != null)
             return;
 
         switch (text) {
@@ -45,8 +45,6 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
                 break;
             case "do" :
                 enterPrint("do {");
-                break;
-            case "try" :
                 break;
             case "switch" :
                 break;
@@ -60,7 +58,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
         String text = ctx.getChild(0).getText();
 
         // skip blocks & if statements
-        if (text.charAt(0) == '{' || ctx.ifBranch() != null)
+        if (text.charAt(0) == '{' || ctx.ifBranch() != null || ctx.tryBlock() != null)
             return;
 
         switch (text) {
@@ -94,6 +92,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
         exitPrint("}");
     }
 
+
     @Override
     public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) {
         print("import ");
@@ -115,6 +114,28 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
         // the whole string to be imported but without the final punctuations aka .*
         print(ctx.getText());
     }
+
+
+    // Try
+    @Override
+    public void enterTryBlock(JavaParser.TryBlockContext ctx) { enterPrint("try {"); }
+
+    @Override
+    public void exitTryBlock(JavaParser.TryBlockContext ctx) { exitPrint("}"); }
+
+    // catch
+    @Override
+    public void enterCatchClause(JavaParser.CatchClauseContext ctx) { enterPrint("catch " + tokens.getText(ctx.catchIdentifier()) + " {");}
+
+    @Override
+    public void exitCatchClause(JavaParser.CatchClauseContext ctx) { exitPrint("}");}
+
+    // finally
+    @Override
+    public void enterFinallyBlock(JavaParser.FinallyBlockContext ctx) { enterPrint("finally {");}
+
+    @Override
+    public void exitFinallyBlock(JavaParser.FinallyBlockContext ctx) { exitPrint("}"); }
 
 }
 

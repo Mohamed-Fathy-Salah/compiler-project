@@ -30,5 +30,22 @@ public class Test {
             }
         }
 
+        try{
+            x++;
+            try{
+                y--;
+            }catch(Exception ex){
+                z+= 10;
+            }
+        } catch (Exception ex){
+            System.out.println("why");
+        }finally {
+           try{
+              if(x==0)
+                  x--;
+           } finally {
+               System.out.println("finally");
+           }
+        }
     }
 }
