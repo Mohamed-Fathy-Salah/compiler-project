@@ -97,13 +97,13 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         String type = tokens.getText(ctx.typeTypeOrVoid());
         String args = tokens.getText(ctx.formalParameters());
-        String thrown = "";
-        try{
-            thrown = ctx.THROWS()+" "+ctx.qualifiedNameList();
-        }catch (Exception e){
+        String thrown = " ";
 
+        if ( ctx.THROWS() != null ){
+            thrown = ctx.THROWS()+" "+ctx.qualifiedNameList().getText();
         }
-        enterPrint(type+" "+ctx.identifier()+args+thrown +"{"); //throws
+
+        enterPrint(type+" "+ctx.identifier().getText()+args+thrown +"{");
     }
 
     @Override
