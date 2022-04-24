@@ -3,7 +3,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 class FileWrite {
-    private StringBuilder str;
+    private final StringBuilder str;
     private static FileWrite single_instance = null;
 
     private FileWrite() { str = new StringBuilder(); }
