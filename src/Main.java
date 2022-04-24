@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String fileName = "Example5.java";
+        String fileName = "Example1.java";
 
         CharStream input = CharStreams.fromFileName("examples/" + fileName);
         JavaLexer lexer = new JavaLexer(input);
@@ -15,9 +15,14 @@ public class Main {
 
         ParseTree tree = parser.compilationUnit();
         ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(new IntermediateCodeGenerator(parser), tree);
+
+        TokenStreamRewriter rewriter = new TokenStreamRewriter(tokens);
+
+        walker.walk(new IntermediateCodeGenerator(rewriter), tree);
 
         FileWrite.Singleton().write("out/" + fileName);
+
+        System.out.println(rewriter.getText());
 
         System.out.println("done");
     }

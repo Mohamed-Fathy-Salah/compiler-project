@@ -479,19 +479,15 @@ localTypeDeclaration
     | ';'
     ;
 
-// separated them for ease of use
-ifBranch : IF parExpression statement ;
-elseBranch : ELSE statement ;
-
 statement
     : blockLabel=block
     | ASSERT expression (':' expression)? ';'
-    | ifBranch elseBranch?
+    | IF parExpression statement (ELSE statement)?
     | FOR '(' forControl ')' statement
     | WHILE parExpression statement
     | DO statement WHILE parExpression ';'
-    | tryBlock (catchClause+ finallyBlock? | finallyBlock)
-    | tryBlock catchClause* finallyBlock?
+    | TRY block (catchClause+ finallyBlock? | finallyBlock)
+    | TRY resourceSpecification block catchClause* finallyBlock?
     | SWITCH parExpression '{' switchBlockStatementGroup* switchLabel* '}'
     | SYNCHRONIZED parExpression block
     | RETURN expression? ';'
@@ -505,17 +501,8 @@ statement
     | identifierLabel=identifier ':' statement
     ;
 
-tryBlock
-    : TRY block
-    | TRY resourceSpecification block
-    ;
-
 catchClause
-    : CATCH catchIdentifier block
-    ;
-
-catchIdentifier
-    :  '(' variableModifier* catchType identifier ')'
+    : CATCH '(' variableModifier* catchType identifier ')' block
     ;
 
 catchType
