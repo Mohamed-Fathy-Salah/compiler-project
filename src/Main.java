@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String fileName = "Example1.java";
+        String fileName = "Example5.java";
 
         CharStream input = CharStreams.fromFileName("examples/" + fileName);
         JavaLexer lexer = new JavaLexer(input);
