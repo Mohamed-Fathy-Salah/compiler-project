@@ -1,39 +1,41 @@
 import java.io.IOException;
 
-public class Test {
+public class Example5 {
     public static void main(String[] args) throws Exception{
         int [] x = {1,2,3,4,5,6,7,8};
-
-        if(x == 0)
-        	System.out.println(x[i + 1]);
+        int y=0;
+        int z=2;
+        if(y == 0)
+        	System.out.println(x[z + 1]);
 
         else{
-            x++;
+            y++;
         	if (y > 5) {
                 y--;
-                if (z)
+                if (z!=0)
                     System.out.println(x[z]);
             }
             else
                 System.out.print("hi");
         }
 
-        for(int i=0;i<x.length;x++)
-        for(int i=0;i<x.length;x++)
-        for(int i=0;i<x.length;x++){
+        for(int i=0;i<x.length;i++)
+        for(int j=0;i<x.length;j++)
+        for(int k=0;i<x.length;k++){
         	System.out.println(x[i]);
         }
-
-        while(x == 0){
+    y=0;
+        while(y != 0){
             if(y == 0 ){
                 do{
-                    x++;
-                }while(true);
+                    z++;
+                    y--;
+                }while(z!=0);
             }
         }
 
         try{
-            x++;
+            y++;
             try{
                 y--;
             }catch(Exception ex){
@@ -43,8 +45,8 @@ public class Test {
             System.out.println("why");
         }finally {
            try{
-              if(x==0)
-                  x--;
+              if(z==0)
+                  y--;
            } finally {
                System.out.println("finally");
            }
