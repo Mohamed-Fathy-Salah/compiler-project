@@ -16,17 +16,16 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void enterStatement(JavaParser.StatementContext ctx) {
         switch (ctx.getChild(0).getText()) {
-            case "if" : {
+            case "if","for","while","do" : {
                 if (!ctx.statement(0).start.getText().equals("{")) {
                    rewriter.insertBefore(ctx.statement(0).start, "{ \n" + getBlock());
                    rewriter.insertAfter(ctx.statement(0).stop, "}");
                 }
             }
-            case "for" : {}
-            case "while" : {}
-            case "do" : {}
+
+            }
         }
-    }
+
 
     @Override
     public void exitStatement(JavaParser.StatementContext ctx) {
