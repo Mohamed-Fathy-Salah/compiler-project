@@ -1,4 +1,4 @@
-public class rectangle{
+public class Example1{
 
 private int length,width;
 
