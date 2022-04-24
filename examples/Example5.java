@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public class Test {
     public static void main(String[] args) throws Exception{
         int [] x = {1,2,3,4,5,6,7,8};
@@ -32,8 +34,6 @@ public class Test {
 
         try{
             x++;
-            x--;
-            x++;
             try{
                 y--;
             }catch(Exception ex){
@@ -48,12 +48,6 @@ public class Test {
            } finally {
                System.out.println("finally");
            }
-        }
-
-        if (x) {
-            x++;
-        }else{
-            y++;
         }
     }
 

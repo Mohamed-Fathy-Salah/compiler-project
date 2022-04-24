@@ -17,7 +17,7 @@ public class Main {
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(new IntermediateCodeGenerator(parser), tree);
 
-        FileWrite.Singleton().write("output/" + fileName);
+        FileWrite.Singleton().write("out/" + fileName);
 
         System.out.println("done");
     }
