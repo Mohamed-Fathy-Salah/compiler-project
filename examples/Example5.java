@@ -51,7 +51,7 @@ public class Test {
         }
     }
 
-    private void foo () {
-
+    private int foo () {
+        return 0;
     }
 }

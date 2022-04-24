@@ -8,21 +8,22 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     public IntermediateCodeGenerator (JavaParser parser) {this.tokens = parser.getTokenStream();}
 
     private void enterPrint(String str) {
-        print(str);
+        println(str);
         indent++;
-        print("FileWrite.getInstance().write(" + blockNumber++ + ");");
+        println("FileWrite.getInstance().write(" + blockNumber++ + ");");
     }
 
     private void print(String str) {
-        String s = "\t".repeat(indent) +
-                str + "\n";
+        String s = "\t".repeat(indent) + str ;
 
         FileWrite.Singleton().append(s);
     }
 
+    private void println(String str) {print(str + "\n");}
+
     private void exitPrint(String str) {
         indent--;
-        print(str);
+        println(str);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
             case "switch" :
                 break;
             default:
-                print(ctx.getText());
+                println(tokens.getText(ctx));
         }
     }
 
@@ -87,7 +88,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         if(ctx.identifier().getText().equals("main"))
-            print("FileWrite.Singleton().write(\"out/runblocks.txt\");");
+            println("FileWrite.Singleton().write(\"out/runblocks.txt\");");
 
         exitPrint("}");
     }
@@ -99,7 +100,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     public void exitElseBranch(JavaParser.ElseBranchContext ctx) { exitPrint("}"); }
 
     @Override
-    public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) { print("import " + ctx.getText().substring(6)); }
+    public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) { println(tokens.getText(ctx)); }
 
     // Try
     @Override
@@ -121,4 +122,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
 
     @Override
     public void exitFinallyBlock(JavaParser.FinallyBlockContext ctx) { exitPrint("}"); }
+
+    @Override
+    public void enterPackageDeclaration(JavaParser.PackageDeclarationContext ctx) { println(tokens.getText(ctx));}
 }
