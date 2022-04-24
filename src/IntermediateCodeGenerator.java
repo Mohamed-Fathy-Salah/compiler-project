@@ -18,7 +18,8 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
 
         for (int i = 0 ;i < indent;i++)
             s.append("\t");
-        s.append(str + "\n");
+        // \n part of the string
+        s.append(str);
 
         FileWrite.Singleton().append(s.toString());
     }
@@ -92,5 +93,28 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     public void exitElseBranch(JavaParser.ElseBranchContext ctx) {
         exitPrint("}");
     }
+
+    @Override
+    public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) {
+        print("import ");
+
+    }
+
+    @Override
+    public void exitImportDeclaration(JavaParser.ImportDeclarationContext ctx) {
+        try {
+            print("." + ctx.MUL().getText());
+        }catch (NullPointerException e) {
+            System.out.println("No * Found");
+        }
+        print(";\n");
+    }
+
+    @Override
+    public void enterQualifiedName(JavaParser.QualifiedNameContext ctx) {
+        // the whole string to be imported but without the final punctuations aka .*
+        print(ctx.getText());
+    }
+
 }
 
