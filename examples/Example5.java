@@ -1,12 +1,12 @@
 import java.io.IOException;
 
 public class Test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         int [] x = {1,2,3,4,5,6,7,8};
 
-        if(x == 0){
+        if(x == 0)
         	System.out.println(x[i + 1]);
-        }
+
         else{
             x++;
         	if (y > 5) {
@@ -49,5 +49,9 @@ public class Test {
                System.out.println("finally");
            }
         }
+    }
+
+    private void foo () {
+
     }
 }

@@ -74,8 +74,29 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     public void enterElseBranch(JavaParser.ElseBranchContext ctx) { enterPrint("else {"); }
 
     @Override
-    public void exitElseBranch(JavaParser.ElseBranchContext ctx) { exitPrint("}"); }
+    public void enterMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+        String thrown = (ctx.THROWS() != null) ?
+                " " + ctx.THROWS() + " " + ctx.qualifiedNameList().getText() : "";
 
+        enterPrint(ctx.typeTypeOrVoid().getText() + " " +
+                ctx.identifier().getText() + " " +
+                tokens.getText(ctx.formalParameters()) +
+                thrown + " {");
+    }
+
+    @Override
+    public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
+        if(ctx.identifier().getText().equals("main"))
+            print("FileWrite.Singleton().write(\"out/runblocks.txt\");");
+
+        exitPrint("}");
+    }
+
+    @Override
+    public void enterModifier(JavaParser.ModifierContext ctx) { print(ctx.getText() + " "); }
+
+    @Override
+    public void exitElseBranch(JavaParser.ElseBranchContext ctx) { exitPrint("}"); }
 
     @Override
     public void enterImportDeclaration(JavaParser.ImportDeclarationContext ctx) { print("import " + ctx.getText().substring(6)); }
