@@ -1,11 +1,12 @@
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import java.io.IOException;
+
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        String fileName = "Example1";
+    public static void main(String[] args) throws IOException, InterruptedException {
+        String fileName = "Example4";
         String fileNameExt = fileName + ".java";
 
         CharStream input = CharStreams.fromFileName("examples/" + fileNameExt);
@@ -21,19 +22,26 @@ public class Main {
         walker.walk(new IntermediateCodeGenerator(rewriter, fileName), tree);
 
         // write file
-        // TODO : wait until file is created
+        // TODO : write at run time not when program finishes
         FileWrite.Singleton().write("out/" + fileNameExt, rewriter.getText());
 
         // run file
-        // TODO : not working
-        Process process = Runtime.getRuntime()
-                .exec(new String[]{
-                        "javac", "-d", "out", "-cp", "src", "out/" + fileNameExt, "&&",
-                        "cd", "out", "&&",
-                        "java", fileName
-                });
+        System.out.println( executeBashCommand("javac -d out/ -cp src/ out/" + fileNameExt));
+        System.out.println( executeBashCommand("java -cp out " + fileName));
+    }
 
-        System.out.println(process.getErrorStream());
-        System.out.println("done");
+    public static boolean executeBashCommand(String command) {
+        boolean success = false;
+        System.out.println("Executing BASH command:\n   " + command);
+        Runtime r = Runtime.getRuntime();
+        String[] commands = {"bash", "-c", command};
+        try {
+            Process p = r.exec(commands);
+            success = true;
+        } catch (Exception e) {
+            System.err.println("Failed to execute bash with command: " + command);
+            e.printStackTrace();
+        }
+        return success;
     }
 }

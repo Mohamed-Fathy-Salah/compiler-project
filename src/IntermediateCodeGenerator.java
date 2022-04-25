@@ -50,7 +50,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         if (ctx.identifier().getText().equals("main")) {
-            rewriter.insertBefore(ctx.methodBody().block().stop, "\t\tFileWrite.Singleton().write(\"" + fileName + "_blocks.txt\");\n");
+            rewriter.insertBefore(ctx.methodBody().block().stop, "\t\tFileWrite.Singleton().write(\"out/" + fileName + "_blocks.txt\");\n");
         }
     }
 }
