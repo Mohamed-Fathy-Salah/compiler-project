@@ -2,9 +2,10 @@ public class Example1{
 
 private int length,width;
 
+    public static void main(String[] args) {
+    }
 public int getLength(){
     int x = 0,y=5;
-
     if (x>1)
         x++;
     else {
