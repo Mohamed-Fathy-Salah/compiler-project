@@ -1,11 +1,13 @@
 import org.antlr.v4.runtime.TokenStreamRewriter;
 
 public class IntermediateCodeGenerator extends JavaParserBaseListener {
+    private final String fileName;
     private final TokenStreamRewriter rewriter;
     private int blockNumber = 0;
 
-    public IntermediateCodeGenerator(TokenStreamRewriter rewriter) {
+    public IntermediateCodeGenerator(TokenStreamRewriter rewriter, String fileName) {
         this.rewriter = rewriter;
+        this.fileName = fileName;
     }
 
     private String getBlock() {
@@ -40,7 +42,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         if (ctx.identifier().getText().equals("main")) {
-            rewriter.insertBefore(ctx.methodBody().block().stop, "\t\tFileWrite.Singleton().write(\"out/blocks.txt\");\n");
+            rewriter.insertBefore(ctx.methodBody().block().stop, "\t\tFileWrite.Singleton().write(\"" + fileName + "_blocks.txt\");\n");
         }
     }
 }
