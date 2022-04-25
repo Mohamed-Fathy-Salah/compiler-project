@@ -16,7 +16,7 @@ class FileWrite {
 
     public void append (String str) { this.str.append(str); }
 
-    public void append (Integer i) { this.str.append(i.toString()); }
+    public void append (Integer i) { this.str.append(i.toString()).append("\n"); }
 
     public void write (String path) {
         write(path, this.str.toString());
@@ -24,9 +24,10 @@ class FileWrite {
 
     public void write (String path, String str) {
         try {
-            FileOutputStream outputFile = new FileOutputStream(path, true);
+            FileOutputStream outputFile = new FileOutputStream(path, false);
             BufferedOutputStream buffer = new BufferedOutputStream(outputFile);
             buffer.write(str.getBytes());
+            buffer.flush();
             buffer.close();
         } catch (Exception ex) {
             ex.printStackTrace();
