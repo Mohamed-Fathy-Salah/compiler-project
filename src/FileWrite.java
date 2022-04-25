@@ -1,6 +1,5 @@
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 
 class FileWrite {
     private final StringBuilder str;
@@ -17,11 +16,20 @@ class FileWrite {
 
     public void append (String str) { this.str.append(str); }
 
+    public void append (Integer i) { this.str.append(i.toString()); }
+
     public void write (String path) {
+        write(path, this.str.toString());
+    }
+
+    public void write (String path, String str) {
         try {
-            Files.write(Paths.get(path), str.toString().getBytes());
-        }catch (IOException ex){
-            System.out.println(ex.getMessage());
+            FileOutputStream outputFile = new FileOutputStream(path, true);
+            BufferedOutputStream buffer = new BufferedOutputStream(outputFile);
+            buffer.write(str.getBytes());
+            buffer.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }
