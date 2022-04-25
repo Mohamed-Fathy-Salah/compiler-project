@@ -20,9 +20,7 @@ public class Main {
 
         walker.walk(new IntermediateCodeGenerator(rewriter), tree);
 
-        FileWrite.Singleton().write("out/" + fileName);
-
-        System.out.println(rewriter.getText());
+        FileWrite.Singleton().write("out/" + fileName, rewriter.getText());
 
         System.out.println("done");
     }

@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 class FileWrite {
@@ -18,9 +19,13 @@ class FileWrite {
     public void append (String str) { this.str.append(str); }
 
     public void write (String path) {
+        write(path, this.str.toString());
+    }
+
+    public void write (String path, String str) {
         try {
-            Files.write(Paths.get(path), str.toString().getBytes());
-        }catch (IOException ex){
+           Files.write(Paths.get(path), str.getBytes());
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
