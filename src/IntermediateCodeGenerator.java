@@ -26,6 +26,14 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
             }
         }
 
+    @Override
+    public void enterSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
+        if (!ctx.blockStatement(0).start.getText().equals("{")) {
+            rewriter.insertBefore(ctx.blockStatement(0).start, "{ \n" + getBlock());
+            rewriter.insertAfter(ctx.blockStatement(ctx.blockStatement().size()-1).stop ,"\n }");
+        }
+    }
+
 
     @Override
     public void exitStatement(JavaParser.StatementContext ctx) {
