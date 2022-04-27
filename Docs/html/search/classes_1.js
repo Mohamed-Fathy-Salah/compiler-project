@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['main_0',['Main',['../class_main.html',1,'']]]
+  ['intermediatecodegenerator_0',['IntermediateCodeGenerator',['../class_intermediate_code_generator.html',1,'']]]
 ];

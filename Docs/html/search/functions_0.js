@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['enterelsebranch_0',['enterElseBranch',['../class_intermediate_code_generator.html#a9a32a31a2e95eef9291fea1a87450e90',1,'IntermediateCodeGenerator']]],
-  ['enterifbranch_1',['enterIfBranch',['../class_intermediate_code_generator.html#a5e02f066d2a825839d2d9dc4a8709ada',1,'IntermediateCodeGenerator']]],
-  ['enterstatement_2',['enterStatement',['../class_intermediate_code_generator.html#a0b86ab8fc7e2b4fbcc611a7f186ad904',1,'IntermediateCodeGenerator']]],
-  ['exitelsebranch_3',['exitElseBranch',['../class_intermediate_code_generator.html#aad9b32fa4db9c81cbbdf324c16dc0b14',1,'IntermediateCodeGenerator']]],
-  ['exitifbranch_4',['exitIfBranch',['../class_intermediate_code_generator.html#af0dd270b1f559b5abd13e9dfc0424de9',1,'IntermediateCodeGenerator']]],
+  ['enterblock_0',['enterBlock',['../class_intermediate_code_generator.html#a04d9845141d71453ca7900ddc7cc228e',1,'IntermediateCodeGenerator']]],
+  ['enterstatement_1',['enterStatement',['../class_intermediate_code_generator.html#a0b86ab8fc7e2b4fbcc611a7f186ad904',1,'IntermediateCodeGenerator']]],
+  ['enterswitchblockstatementgroup_2',['enterSwitchBlockStatementGroup',['../class_intermediate_code_generator.html#a1da9cd4629062151b0797bb6f2a3870b',1,'IntermediateCodeGenerator']]],
+  ['executebashcommand_3',['executeBashCommand',['../class_main.html#aa149eea6d927792737b7253f9b1f90c7',1,'Main']]],
+  ['exitmethoddeclaration_4',['exitMethodDeclaration',['../class_intermediate_code_generator.html#a19a4fc6e3d28903ce51c9d66d86d836a',1,'IntermediateCodeGenerator']]],
   ['exitstatement_5',['exitStatement',['../class_intermediate_code_generator.html#aaff05c068971c6361220315f966e873b',1,'IntermediateCodeGenerator']]]
 ];
