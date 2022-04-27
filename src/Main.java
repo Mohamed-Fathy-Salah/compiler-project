@@ -6,7 +6,7 @@ import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
-        String fileName = "Example4";
+        String fileName = "Example1";
         String fileNameExt = fileName + ".java";
 
         CharStream input = CharStreams.fromFileName("examples/" + fileNameExt);

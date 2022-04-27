@@ -12,7 +12,7 @@ public int getLength(){
         y++;
     }
 
-    if (x<0) {
+    if (x==0) {
         x--;
         if(y==1)
             y++;
@@ -20,7 +20,7 @@ public int getLength(){
     else
         y++;
 
-    if(x==2) {
+    if(x==0) {
         if (y!=0)
             return 0;
     }
