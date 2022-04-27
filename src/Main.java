@@ -23,11 +23,11 @@ public class Main {
 
         // write file
         // TODO : write at run time not when program finishes
-        FileWrite.Singleton().write("out/" + fileNameExt, rewriter.getText());
+        FileWrite.Singleton().write("examples/intermediate/" + fileNameExt, rewriter.getText());
 
         // run file
-        System.out.println( executeBashCommand("javac -d out/ -cp src/ out/" + fileNameExt));
-        System.out.println( executeBashCommand("java -cp out " + fileName));
+        System.out.println( executeBashCommand("javac -d examples/intermediate/ -cp src/ examples/intermediate/" + fileNameExt));
+        System.out.println( executeBashCommand("java -cp examples/intermediate " + fileName));
     }
 
     public static boolean executeBashCommand(String command) {

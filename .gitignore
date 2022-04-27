@@ -4,3 +4,5 @@ out/*
 output/*
 *.iml
 *.class
+./examples/blocks/*
+./examples/intermediate/*
