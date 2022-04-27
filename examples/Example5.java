@@ -20,17 +20,18 @@ public class Example5 {
         }
 
         for(int i=0;i<x.length;i++)
-        for(int j=0;i<x.length;j++)
-        for(int k=0;i<x.length;k++){
+        for(int j=0;j<x.length;j++)
+        for(int k=0;k<x.length;k++){
         	System.out.println(x[i]);
         }
     y=0;
-        while(y != 0){
+        z=2;
+        while(y >= 0){
             if(y == 0 ){
                 do{
-                    z++;
+                    z--;
                     y--;
-                }while(z!=0);
+                }while(z>0);
             }
         }
 

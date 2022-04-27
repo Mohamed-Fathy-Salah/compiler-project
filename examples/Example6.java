@@ -6,7 +6,7 @@ public class Example6 {
 
     int [] arr = {1,2,3,4,5,6,7,8,9,10};
 
-    if (x<5)
+    if (x<=5)
         System.out.println("yes");
     if(y==4)
         if (x==5)
@@ -19,9 +19,9 @@ public class Example6 {
                 System.out.print(arr[i]);
 
     while(x<10)
-        System.out.println(arr[x]);
+        x++;
     do
-        System.out.println("hi");
+        y++;
     while (y<6);
 
     if(y<4)
