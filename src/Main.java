@@ -2,13 +2,15 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         String fileName = "Example7";
         String fileNameExt = fileName + ".java";
-        String outputFolder = "examples/intermediate/";
+        String intermediateFolder = "examples/intermediate/";
+        String htmlFolder = "examples/html/";
 
         CharStream input = CharStreams.fromFileName("examples/" + fileNameExt);
         JavaLexer lexer = new JavaLexer(input);
@@ -18,16 +20,20 @@ public class Main {
         ParseTreeWalker walker = new ParseTreeWalker();
 
         TokenStreamRewriter rewriter = new TokenStreamRewriter(tokens);
+        TokenStreamRewriter rewriter1 = new TokenStreamRewriter(tokens);
 
         walker.walk(new IntermediateCodeGenerator(rewriter, fileName), tree);
 
         // write file
         // TODO : write at run time not when program finishes
-        FileWrite.Singleton().write(outputFolder + fileNameExt, rewriter.getText());
+        FileWrite.Singleton().write(intermediateFolder + fileNameExt, rewriter.getText());
 
         // run file
         Runtime r= Runtime.getRuntime();
-        r.exec(new String[]{"javac", "-d", outputFolder, "-cp", "src/", outputFolder + fileNameExt});
-        r.exec(new String[]{"java", "-cp", outputFolder, fileName});
+        r.exec(new String[]{"javac", "-d", intermediateFolder, "-cp", "src/", intermediateFolder + fileNameExt});
+        r.exec(new String[]{"java", "-cp", intermediateFolder, fileName});
+
+        walker.walk(new HtmlGenerator(rewriter1), tree);
+        FileWrite.Singleton().write(htmlFolder + fileName + ".html", rewriter1.getText());
     }
 }

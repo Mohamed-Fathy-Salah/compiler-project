@@ -32,6 +32,15 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     }
 
     @Override
+    public void exitStatement(JavaParser.StatementContext ctx) {
+        // else statement
+        if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null && !ctx.statement(1).start.getText().equals("{")) {
+            rewriter.insertBefore(ctx.statement(1).start, "{" + getBlock());
+            rewriter.insertAfter(ctx.statement(1).stop, "}");
+        }
+    }
+
+    @Override
     public void enterSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
         if (!ctx.blockStatement(0).start.getText().equals("{")) {
             rewriter.insertBefore(ctx.blockStatement(0).start, "{ \n" + getBlock());
@@ -39,13 +48,6 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
         }
     }
 
-    @Override
-    public void exitStatement(JavaParser.StatementContext ctx) {
-        if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null && !ctx.statement(1).start.getText().equals("{")) {
-            rewriter.insertBefore(ctx.statement(1).start, "{" + getBlock());
-            rewriter.insertAfter(ctx.statement(1).stop, "}");
-        }
-    }
 
     @Override
     public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
