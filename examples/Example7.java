@@ -1,10 +1,11 @@
 import java.io.IOException;
 
 public class Example7 {
-    int x =5;
+    int x = 5;
+
     public static void main(String[] args) throws IOException {
-        int x =6;
-        switch(x){
+        int x = 6;
+        switch (x) {
             case 5:
                 x++;
                 System.out.println(6);
@@ -20,33 +21,46 @@ public class Example7 {
                 System.out.println(7);
                 break;
 
-            case 8:{
+            case 8: {
                 x++;
                 System.out.println(8);
-                break;}
+                break;
+            }
 
-            default:{
-                System.out.println("not found");}
+            default: {
+                System.out.println("not found");
+            }
 
         }
 
         foo(5);
 
+        int y = 4;
+        int z = 2;
+        x = 5;
+        if (y == 4)
+            if (x == 5)
+                if (z == 3)
+                    System.out.println("all");
+                else
+                    System.out.print("last else");
     }
-    public static void foo (int i) {
-        if ( i > 5) {
+
+    public static void foo(int i) {
+        if (i > 5) {
             System.out.println("bigger");
-            return ;
-        }else {
+            return;
+        } else {
             System.out.println("smaller");
             int x = blah();
-            if ( x == 0){
+            if (x == 0) {
                 System.out.println("zero");
             }
         }
     }
-    public static int blah () {
+
+    public static int blah() {
         System.out.println("inside blah");
         return 0;
     }
-    }
+}

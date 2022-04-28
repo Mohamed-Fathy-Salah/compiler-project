@@ -12,6 +12,8 @@ public class Example6 {
         if (x==5)
             if(z==3)
                 System.out.println("all");
+            else 
+                System.out.print("last else");
 
     for (int i=0;i<x;i++)
         for (int j=0;j<y;j++)
