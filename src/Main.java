@@ -32,7 +32,7 @@ public class Main {
         r.exec(new String[]{"javac", "-d", intermediateFolder, "-cp", "src/", intermediateFolder + fileNameExt});
         r.exec(new String[]{"java", "-cp", intermediateFolder, fileName});
 
-        walker.walk(new HtmlGenerator(rewriter1), tree);
+        walker.walk(new HtmlGenerator(rewriter1, new String[]{"red", "green"}), tree);
         FileWrite.getInstance().write(htmlFolder + fileName + ".html", rewriter1.getText());
 
         // run html in browser

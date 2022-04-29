@@ -25,8 +25,9 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void enterBlock(JavaParser.BlockContext ctx) {
         String text = ctx.parent.parent.getChild(0).getText();
-        if (!text.equals("if") && !text.equals("while") && !text.equals("do") && !text.equals("for"))
+        if (!text.equals("if") && !text.equals("while") && !text.equals("do") && !text.equals("for")){
             rewriter.insertAfter(ctx.start, injectAppendFile());
+        }
     }
 
     @Override
@@ -60,6 +61,8 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void exitStatement(JavaParser.StatementContext ctx) {
         // else statement
+        if ( blockNumber == 12 )
+            System.out.println(ctx.getText());
         if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null) {
             if (!ctx.statement(1).start.getText().equals("{")) {
                 rewriter.insertBefore(ctx.statement(1).start, "{" + injectAppendFile());

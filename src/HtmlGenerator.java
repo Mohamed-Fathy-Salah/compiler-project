@@ -5,16 +5,16 @@ public class HtmlGenerator extends JavaParserBaseListener {
     private int blockNumber = 0;
     private final String[] colors;
 
-    public HtmlGenerator(TokenStreamRewriter rewriter) {
+    public HtmlGenerator(TokenStreamRewriter rewriter, String[] colors) {
         this.rewriter = rewriter;
-        colors = new String[]{"red", "green"};
+        this.colors = colors;
     }
 
     private String injectHtml() {
         // if (bockNumber in green)
         // if (blockNumber in red)
         // if (blockNumber in orange)
-        return "<pre style=\"background-color:" + colors[blockNumber % colors.length] + "\">";
+        return "<pre style=\"background-color:" + colors[blockNumber % 2] + "\">";
     }
 
     @Override
