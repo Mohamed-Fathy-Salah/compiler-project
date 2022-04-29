@@ -40,7 +40,7 @@ public class ColorHelper {
                 cnt++;
             }
         }
-        str.insert(0, "\n" + cnt);
+//        str.insert(0, "\n" + cnt);
         return str.toString();
     }
 }

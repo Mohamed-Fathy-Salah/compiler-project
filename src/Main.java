@@ -2,9 +2,14 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Scanner;
 
 public class Main {
+    public static HashSet<Integer> greenBlocks, orangeBlocks;
     public static void main(String[] args) throws IOException {
         String fileName = "Example7";
         String fileNameExt = fileName + ".java";
@@ -32,10 +37,34 @@ public class Main {
         r.exec(new String[]{"javac", "-d", intermediateFolder, "-cp", "src/", intermediateFolder + fileNameExt});
         r.exec(new String[]{"java", "-cp", intermediateFolder, fileName});
 
-        walker.walk(new HtmlGenerator(rewriter1, new String[]{"red", "green"}), tree);
+        fileRead(fileName);
+
+        walker.walk(new HtmlGenerator(rewriter1, greenBlocks, orangeBlocks), tree);
         FileWrite.getInstance().write(htmlFolder + fileName + ".html", rewriter1.getText());
 
         // run html in browser
         r.exec(new String[]{"firefox", htmlFolder + fileName + ".html"});
+    }
+
+    public static void fileRead(String fileName){
+        greenBlocks = new HashSet<Integer>();
+        orangeBlocks = new HashSet<Integer>();
+        try {
+            File myObj = new File("examples/blocks/" + fileName + "_blocks.txt");
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                if (data.equals("o")) break;
+                greenBlocks.add(Integer.parseInt(data));
+            }
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                orangeBlocks.add(Integer.parseInt(data));
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
 }

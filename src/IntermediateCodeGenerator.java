@@ -61,8 +61,6 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void exitStatement(JavaParser.StatementContext ctx) {
         // else statement
-        if ( blockNumber == 12 )
-            System.out.println(ctx.getText());
         if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null) {
             if (!ctx.statement(1).start.getText().equals("{")) {
                 rewriter.insertBefore(ctx.statement(1).start, "{" + injectAppendFile());
