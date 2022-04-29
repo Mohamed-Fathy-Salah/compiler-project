@@ -25,7 +25,7 @@ public class Main {
 
         // write file
         // TODO : write at run time not when program finishes
-        FileWrite.Singleton().write(intermediateFolder + fileNameExt, rewriter.getText());
+        FileWrite.getInstance().write(intermediateFolder + fileNameExt, rewriter.getText());
 
         // run file
         Runtime r= Runtime.getRuntime();
@@ -33,6 +33,6 @@ public class Main {
         r.exec(new String[]{"java", "-cp", intermediateFolder, fileName});
 
         walker.walk(new HtmlGenerator(rewriter1), tree);
-        FileWrite.Singleton().write(htmlFolder + fileName + ".html", rewriter1.getText());
+        FileWrite.getInstance().write(htmlFolder + fileName + ".html", rewriter1.getText());
     }
 }

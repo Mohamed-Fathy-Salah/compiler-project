@@ -10,21 +10,23 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
         this.fileName = fileName;
     }
 
-    private String getBlock() {
-        // g for green
-        return "\n\t\tFileWrite.Singleton().append(\"g \"" + blockNumber++ + ");\n";
+    private String injectFileWrite() {
+        return "\nFileWrite.getInstance().append(" + blockNumber++ + ");\n";
     }
 
-    private String getInjection(String expr) {
-        // TODO : parge arr to -> new String[]{exprs};
-        String[] arr = expr.split("\\|\\|");
-        // TODO: should return g or o
-        return "\nColorSelector.Singleton().eval(" + arr + ")\n";
+    private String injectColor(String expr) {
+        String[] expressions = expr.split("\\|\\|");
+        StringBuilder tmp = new StringBuilder(expressions[0]);
+        for (int i = 1; i < expressions.length; i++)
+            tmp.append(",").append(expressions[i]);
+        return "ColorHelper.getInstance().eval(" + blockNumber + ", new boolean[]{" + tmp + "});\n";
     }
 
     @Override
     public void enterBlock(JavaParser.BlockContext ctx) {
-        rewriter.insertAfter(ctx.start, getBlock());
+        String text = ctx.parent.parent.getChild(0).getText();
+        if (!text.equals("if") && !text.equals("while") && !text.equals("do") && !text.equals("for"))
+            rewriter.insertAfter(ctx.start, injectFileWrite());
     }
 
     @Override
@@ -32,20 +34,24 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
         switch (ctx.getChild(0).getText()) {
             case "if", "while", "do" -> {
                 if (!ctx.statement(0).start.getText().equals("{")) {
-                    rewriter.insertBefore(ctx.statement(0).start, "{" + getBlock());
+                    rewriter.insertBefore(ctx.statement(0).start,
+                            "{" + injectColor(ctx.parExpression().expression().getText()) + injectFileWrite());
+
                     rewriter.insertAfter(ctx.statement(0).stop, "}");
                 } else {
-                    rewriter.insertAfter(ctx.statement(0).start, getBlock());
+                    rewriter.insertAfter(ctx.statement(0).start,
+                            injectColor(ctx.parExpression().expression().getText()) + injectFileWrite());
                 }
-                rewriter.insertAfter(ctx.stop, getBlock(ctx.parExpression().getText());
-                System.out.println();
             }
             case "for" -> {
                 if (!ctx.statement(0).start.getText().equals("{")) {
-                    rewriter.insertBefore(ctx.statement(0).start, "{" + getBlock());
+                    rewriter.insertBefore(ctx.statement(0).start,
+                            "{" + injectColor(ctx.forControl().expression().getText()) + injectFileWrite());
+
                     rewriter.insertAfter(ctx.statement(0).stop, "}");
                 } else {
-                    rewriter.insertAfter(ctx.statement(0).start, getBlock());
+                    rewriter.insertAfter(ctx.statement(0).start,
+                            injectColor(ctx.forControl().expression().getText()) + injectFileWrite());
                 }
             }
         }
@@ -55,7 +61,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     public void exitStatement(JavaParser.StatementContext ctx) {
         // else statement
         if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null && !ctx.statement(1).start.getText().equals("{")) {
-            rewriter.insertBefore(ctx.statement(1).start, "{" + getBlock());
+            rewriter.insertBefore(ctx.statement(1).start, "{" + injectFileWrite());
             rewriter.insertAfter(ctx.statement(1).stop, "}");
         }
     }
@@ -63,7 +69,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void enterSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
         if (!ctx.blockStatement(0).start.getText().equals("{")) {
-            rewriter.insertBefore(ctx.blockStatement(0).start, "{ \n" + getBlock());
+            rewriter.insertBefore(ctx.blockStatement(0).start, "{ \n" + injectFileWrite());
             rewriter.insertAfter(ctx.blockStatement(ctx.blockStatement().size() - 1).stop, "\n }");
         }
     }
@@ -72,7 +78,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         if (ctx.identifier().getText().equals("main")) {
-            rewriter.insertBefore(ctx.methodBody().block().stop, "\t\tFileWrite.Singleton().write(\"examples/blocks/" + fileName + "_blocks.txt\");\n");
+            rewriter.insertBefore(ctx.methodBody().block().stop, "\t\tFileWrite.getInstance().write(\"examples/blocks/" + fileName + "_blocks.txt\");\n");
         }
     }
 }

@@ -1,20 +1,20 @@
 import org.antlr.v4.runtime.TokenStreamRewriter;
 
-public class HtmlGenerator extends JavaParserBaseListener{
+public class HtmlGenerator extends JavaParserBaseListener {
     private final TokenStreamRewriter rewriter;
     private int blockNumber = 0;
     private final String[] colors;
 
     public HtmlGenerator(TokenStreamRewriter rewriter) {
         this.rewriter = rewriter;
-        colors = new String[] {"red", "green", "cyan", "blue", "yellow", "orange", "gray"};
+        colors = new String[]{"red", "green", "cyan", "blue", "yellow", "orange", "gray"};
     }
 
     private String getBlock() {
         // if (bockNumber in green)
         // if (blockNumber in red)
         // if (blockNumber in orange)
-        return "<pre style=\"background-color:"+ colors[blockNumber % colors.length] +"\">";
+        return "<pre style=\"background-color:" + colors[blockNumber % colors.length] + "\">";
     }
 
     @Override
