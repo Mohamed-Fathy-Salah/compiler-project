@@ -3,15 +3,14 @@ import java.io.FileOutputStream;
 
 class FileWrite {
     private final StringBuilder str;
-    private static FileWrite single_instance = null;
+    private static FileWrite instance = null;
 
     private FileWrite() { str = new StringBuilder(); }
 
-    public static FileWrite Singleton() {
-        if (single_instance == null) {
-            single_instance = new FileWrite();
-        }
-        return single_instance;
+    public static FileWrite getInstance() {
+        if (instance == null)
+            instance = new FileWrite();
+        return instance;
     }
 
     public void append (String str) { this.str.append(str); }
