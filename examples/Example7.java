@@ -21,15 +21,12 @@ public class Example7 {
                 System.out.println(7);
                 break;
 
-            case 8: {
+            case 8:
                 x++;
                 System.out.println(8);
                 break;
-            }
-
-            default: {
+            default:
                 System.out.println("not found");
-            }
 
         }
 

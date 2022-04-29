@@ -17,7 +17,10 @@ public class HtmlGenerator extends JavaParserBaseListener {
         String color = "tomato";
         if (greenBlocks.contains(blockNumber))
             color = "MediumSeaGreen";
-        return "<pre style=\"background-color:" + color + "\">";
+        return injectHtml(color);
+    }
+    private String injectHtml(String color) {
+        return "<span style=\"background-color:" + color + "\">";
     }
 
     @Override
@@ -31,7 +34,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
         String text = ctx.parent.parent.getChild(0).getText();
         if (!text.equals("if") && !text.equals("while") && !text.equals("do") && !text.equals("for")) {
             rewriter.insertBefore(ctx.start, injectHtml());
-            rewriter.insertAfter(ctx.stop, "</pre>");
+            rewriter.insertAfter(ctx.stop, "</span>");
             blockNumber++;
         }
     }
@@ -41,20 +44,20 @@ public class HtmlGenerator extends JavaParserBaseListener {
         switch (ctx.getChild(0).getText()) {
             case "if", "while", "do" -> {
                 if (orangeBlocks.contains(blockNumber)) {
-                    rewriter.insertBefore(ctx.parExpression().start, "<pre style=\"background-color:orange\">");
-                    rewriter.insertAfter(ctx.parExpression().stop, "</pre>");
+                    rewriter.insertBefore(ctx.parExpression().start, injectHtml("orange"));
+                    rewriter.insertAfter(ctx.parExpression().stop, "</span>");
                 }
                 rewriter.insertBefore(ctx.start, injectHtml());
-                rewriter.insertAfter(ctx.stop, "</pre>");
+                rewriter.insertAfter(ctx.stop, "</span>");
                 blockNumber++;
             }
             case "for" -> {
                 if (orangeBlocks.contains(blockNumber)) {
-                    rewriter.insertBefore(ctx.forControl().expression().start, "<pre style=\"background-color:orange\">");
-                    rewriter.insertAfter(ctx.forControl().expression().stop, "</pre>");
+                    rewriter.insertBefore(ctx.forControl().expression().start, injectHtml("orange"));
+                    rewriter.insertAfter(ctx.forControl().expression().stop, "</span>");
                 }
                 rewriter.insertBefore(ctx.start, injectHtml());
-                rewriter.insertAfter(ctx.stop, "</pre>");
+                rewriter.insertAfter(ctx.stop, "</span>");
                 blockNumber++;
             }
         }
@@ -65,7 +68,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
         // else statement
         if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null) {
             rewriter.insertAfter(ctx.statement(0).stop, injectHtml());
-            rewriter.insertAfter(ctx.stop, "</pre>");
+            rewriter.insertAfter(ctx.stop, "</span>");
             blockNumber++;
         }
     }
@@ -74,7 +77,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
     public void enterSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
         if (!ctx.blockStatement(0).start.getText().equals("{")) {
             rewriter.insertBefore(ctx.start, injectHtml());
-            rewriter.insertAfter(ctx.stop, "</pre>");
+            rewriter.insertAfter(ctx.stop, "</span>");
             blockNumber++;
         }
     }
