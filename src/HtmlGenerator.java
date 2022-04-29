@@ -1,3 +1,4 @@
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.TokenStreamRewriter;
 
 import java.util.HashSet;
@@ -13,14 +14,15 @@ public class HtmlGenerator extends JavaParserBaseListener {
         this.orangeBlocks = orangeBlocks;
     }
 
-    private String injectHtml() {
-        String color = "tomato";
-        if (greenBlocks.contains(blockNumber))
-            color = "MediumSeaGreen";
-        return injectHtml(color);
+    private void injectHtml(ParserRuleContext ctx) {
+        String color = greenBlocks.contains(blockNumber)? "MediumSeaGreen" : "tomato";
+        injectHtml(ctx, color);
+        blockNumber++;
     }
-    private String injectHtml(String color) {
-        return "<span style=\"background-color:" + color + "\">";
+
+    private void injectHtml(ParserRuleContext ctx, String color) {
+        rewriter.insertBefore(ctx.start, "<span style=\"background:" + color + "\">");
+        rewriter.insertAfter(ctx.stop, "</span>");
     }
 
     @Override
@@ -32,33 +34,22 @@ public class HtmlGenerator extends JavaParserBaseListener {
     @Override
     public void enterBlock(JavaParser.BlockContext ctx) {
         String text = ctx.parent.parent.getChild(0).getText();
-        if (!text.equals("if") && !text.equals("while") && !text.equals("do") && !text.equals("for")) {
-            rewriter.insertBefore(ctx.start, injectHtml());
-            rewriter.insertAfter(ctx.stop, "</span>");
-            blockNumber++;
-        }
+        if (!text.equals("if") && !text.equals("while") && !text.equals("do") && !text.equals("for"))
+            injectHtml(ctx);
     }
 
     @Override
     public void enterStatement(JavaParser.StatementContext ctx) {
         switch (ctx.getChild(0).getText()) {
             case "if", "while", "do" -> {
-                if (orangeBlocks.contains(blockNumber)) {
-                    rewriter.insertBefore(ctx.parExpression().start, injectHtml("orange"));
-                    rewriter.insertAfter(ctx.parExpression().stop, "</span>");
-                }
-                rewriter.insertBefore(ctx.start, injectHtml());
-                rewriter.insertAfter(ctx.stop, "</span>");
-                blockNumber++;
+                if (orangeBlocks.contains(blockNumber))
+                    injectHtml(ctx.parExpression(), "orange");
+                injectHtml(ctx);
             }
             case "for" -> {
-                if (orangeBlocks.contains(blockNumber)) {
-                    rewriter.insertBefore(ctx.forControl().expression().start, injectHtml("orange"));
-                    rewriter.insertAfter(ctx.forControl().expression().stop, "</span>");
-                }
-                rewriter.insertBefore(ctx.start, injectHtml());
-                rewriter.insertAfter(ctx.stop, "</span>");
-                blockNumber++;
+                if (orangeBlocks.contains(blockNumber))
+                    injectHtml(ctx.forControl().expression(), "orange");
+                injectHtml(ctx);
             }
         }
     }
@@ -67,7 +58,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
     public void exitStatement(JavaParser.StatementContext ctx) {
         // else statement
         if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null) {
-            rewriter.insertAfter(ctx.statement(0).stop, injectHtml());
+            rewriter.insertAfter(ctx.statement(0).stop, "<span style=\"background:" + (greenBlocks.contains(blockNumber) ? "MediumSeaGreen" : "tomato") + "\">");
             rewriter.insertAfter(ctx.stop, "</span>");
             blockNumber++;
         }
@@ -75,10 +66,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
 
     @Override
     public void enterSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
-        if (!ctx.blockStatement(0).start.getText().equals("{")) {
-            rewriter.insertBefore(ctx.start, injectHtml());
-            rewriter.insertAfter(ctx.stop, "</span>");
-            blockNumber++;
-        }
+        if (!ctx.blockStatement(0).start.getText().equals("{"))
+            injectHtml(ctx);
     }
 }
