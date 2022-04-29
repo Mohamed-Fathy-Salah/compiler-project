@@ -11,7 +11,15 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     }
 
     private String getBlock() {
-        return "\n\t\tFileWrite.Singleton().append(" + blockNumber++ + ");\n";
+        // g for green
+        return "\n\t\tFileWrite.Singleton().append(\"g \"" + blockNumber++ + ");\n";
+    }
+
+    private String getInjection(String expr) {
+        // TODO : parge arr to -> new String[]{exprs};
+        String[] arr = expr.split("\\|\\|");
+        // TODO: should return g or o
+        return "\nColorSelector.Singleton().eval(" + arr + ")\n";
     }
 
     @Override
@@ -22,10 +30,22 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void enterStatement(JavaParser.StatementContext ctx) {
         switch (ctx.getChild(0).getText()) {
-            case "if", "for", "while", "do" -> {
+            case "if", "while", "do" -> {
                 if (!ctx.statement(0).start.getText().equals("{")) {
                     rewriter.insertBefore(ctx.statement(0).start, "{" + getBlock());
                     rewriter.insertAfter(ctx.statement(0).stop, "}");
+                } else {
+                    rewriter.insertAfter(ctx.statement(0).start, getBlock());
+                }
+                rewriter.insertAfter(ctx.stop, getBlock(ctx.parExpression().getText());
+                System.out.println();
+            }
+            case "for" -> {
+                if (!ctx.statement(0).start.getText().equals("{")) {
+                    rewriter.insertBefore(ctx.statement(0).start, "{" + getBlock());
+                    rewriter.insertAfter(ctx.statement(0).stop, "}");
+                } else {
+                    rewriter.insertAfter(ctx.statement(0).start, getBlock());
                 }
             }
         }
@@ -44,7 +64,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     public void enterSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
         if (!ctx.blockStatement(0).start.getText().equals("{")) {
             rewriter.insertBefore(ctx.blockStatement(0).start, "{ \n" + getBlock());
-            rewriter.insertAfter(ctx.blockStatement(ctx.blockStatement().size()-1).stop ,"\n }");
+            rewriter.insertAfter(ctx.blockStatement(ctx.blockStatement().size() - 1).stop, "\n }");
         }
     }
 
