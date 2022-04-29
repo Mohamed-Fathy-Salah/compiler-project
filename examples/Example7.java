@@ -48,6 +48,7 @@ public class Example7 {
                 }
                 else
                     System.out.print("last else");
+
     }
 
     public static void foo(int i) {

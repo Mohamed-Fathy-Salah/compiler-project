@@ -34,5 +34,8 @@ public class Main {
 
         walker.walk(new HtmlGenerator(rewriter1), tree);
         FileWrite.getInstance().write(htmlFolder + fileName + ".html", rewriter1.getText());
+
+        // run html in browser
+        r.exec(new String[]{"firefox", htmlFolder + fileName + ".html"});
     }
 }

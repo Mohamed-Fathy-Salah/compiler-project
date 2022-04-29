@@ -10,7 +10,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
         this.fileName = fileName;
     }
 
-    private String injectFileWrite() {
+    private String injectAppendFile() {
         return "\nFileWrite.getInstance().append(" + blockNumber++ + ");\n";
     }
 
@@ -26,7 +26,7 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     public void enterBlock(JavaParser.BlockContext ctx) {
         String text = ctx.parent.parent.getChild(0).getText();
         if (!text.equals("if") && !text.equals("while") && !text.equals("do") && !text.equals("for"))
-            rewriter.insertAfter(ctx.start, injectFileWrite());
+            rewriter.insertAfter(ctx.start, injectAppendFile());
     }
 
     @Override
@@ -35,23 +35,23 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
             case "if", "while", "do" -> {
                 if (!ctx.statement(0).start.getText().equals("{")) {
                     rewriter.insertBefore(ctx.statement(0).start,
-                            "{" + injectColor(ctx.parExpression().expression().getText()) + injectFileWrite());
+                            "{" + injectColor(ctx.parExpression().expression().getText()) + injectAppendFile());
 
                     rewriter.insertAfter(ctx.statement(0).stop, "}");
                 } else {
                     rewriter.insertAfter(ctx.statement(0).start,
-                            injectColor(ctx.parExpression().expression().getText()) + injectFileWrite());
+                            injectColor(ctx.parExpression().expression().getText()) + injectAppendFile());
                 }
             }
             case "for" -> {
                 if (!ctx.statement(0).start.getText().equals("{")) {
                     rewriter.insertBefore(ctx.statement(0).start,
-                            "{" + injectColor(ctx.forControl().expression().getText()) + injectFileWrite());
+                            "{" + injectColor(ctx.forControl().expression().getText()) + injectAppendFile());
 
                     rewriter.insertAfter(ctx.statement(0).stop, "}");
                 } else {
                     rewriter.insertAfter(ctx.statement(0).start,
-                            injectColor(ctx.forControl().expression().getText()) + injectFileWrite());
+                            injectColor(ctx.forControl().expression().getText()) + injectAppendFile());
                 }
             }
         }
@@ -60,16 +60,20 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void exitStatement(JavaParser.StatementContext ctx) {
         // else statement
-        if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null && !ctx.statement(1).start.getText().equals("{")) {
-            rewriter.insertBefore(ctx.statement(1).start, "{" + injectFileWrite());
-            rewriter.insertAfter(ctx.statement(1).stop, "}");
+        if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null) {
+            if (!ctx.statement(1).start.getText().equals("{")) {
+                rewriter.insertBefore(ctx.statement(1).start, "{" + injectAppendFile());
+                rewriter.insertAfter(ctx.statement(1).stop, "}");
+            } else {
+                rewriter.insertAfter(ctx.statement(1).start, injectAppendFile());
+            }
         }
     }
 
     @Override
     public void enterSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
         if (!ctx.blockStatement(0).start.getText().equals("{")) {
-            rewriter.insertBefore(ctx.blockStatement(0).start, "{ \n" + injectFileWrite());
+            rewriter.insertBefore(ctx.blockStatement(0).start, "{ \n" + injectAppendFile());
             rewriter.insertAfter(ctx.blockStatement(ctx.blockStatement().size() - 1).stop, "\n }");
         }
     }
@@ -78,7 +82,11 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     @Override
     public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {
         if (ctx.identifier().getText().equals("main")) {
-            rewriter.insertBefore(ctx.methodBody().block().stop, "\t\tFileWrite.getInstance().write(\"examples/blocks/" + fileName + "_blocks.txt\");\n");
+            rewriter.insertBefore(ctx.methodBody().block().stop,
+                    "FileWrite.getInstance().append(\"o\");\n" +
+                            "FileWrite.getInstance().append(ColorHelper.getInstance().getOrange());\n" +
+                            "FileWrite.getInstance().write(\"examples/blocks/" + fileName + "_blocks.txt\");\n"
+            );
         }
     }
 }
