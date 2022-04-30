@@ -45,11 +45,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
      * @param color : the color that the block will take depending on its state in execution
      */
     private void injectHtml(ParserRuleContext ctx, String color) {
-        rewriter.insertBefore(ctx.start, "<div
-        style=\"background-color: " + color + "; border: 1px dashed white;\"
-        onMouseOver=\"this.style.fontWeight='bolder'; this.style.fontSize='105%';\"
-        onMouseOut=\"this.style.fontWeight='normal';  this.style.fontSize='100%';\"
-        >");
+        rewriter.insertBefore(ctx.start, "<div style=\"background-color: " + color + "; border: 1px dashed white;\" >");
         rewriter.insertAfter(ctx.stop, "</div>");
     }
 
@@ -103,11 +99,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
     public void exitStatement(JavaParser.StatementContext ctx) {
         // else statement
         if (ctx.getChild(0).getText().equals("if") && ctx.statement(1) != null) {
-            rewriter.insertAfter(ctx.statement(0).stop, "<div
-            style=\"background-color: " + (greenBlocks.contains(blockNumber) ? "green" : "red") + "; border: 1px dashed white;\"
-            onMouseOver=\"this.style.fontWeight='bolder'; this.style.fontSize='105%';\"
-            onMouseOut=\"this.style.fontWeight='normal';  this.style.fontSize='100%';\"
-            >");
+            rewriter.insertAfter(ctx.statement(0).stop, "<div style=\"background-color: " + (greenBlocks.contains(blockNumber) ? "green" : "red") + "; border: 1px dashed white;\" >");
             rewriter.insertAfter(ctx.stop, "</div>");
             blockNumber++;
         }
