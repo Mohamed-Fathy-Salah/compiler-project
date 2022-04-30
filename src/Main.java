@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Main {
     public static HashSet<Integer> greenBlocks, orangeBlocks;
     public static void main(String[] args) throws IOException {
-        String fileName = "Example7";
+        String fileName = "Example1";
         String fileNameExt = fileName + ".java";
         String intermediateFolder = "examples/intermediate/";
         String htmlFolder = "examples/html/";

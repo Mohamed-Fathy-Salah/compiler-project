@@ -33,8 +33,13 @@ public class ColorHelper {
         if (arr[blockNumber] == null)
             arr[blockNumber] = expr.clone();
         else
-            for (int i = 0; i < expr.length; i++)
-                arr[blockNumber][i] &= expr[i];
+            for (int i = 0; i < expr.length; i++) {
+                if (arr[blockNumber][i] ^ expr[i]) {
+                    for (int j = i; j < expr.length; j++)
+                        arr[blockNumber][j] = false;
+                    return;
+                }
+            }
     }
 
     /**
@@ -42,17 +47,16 @@ public class ColorHelper {
      */
     public String getOrange() {
         StringBuilder str = new StringBuilder();
-        int cnt = 0;
+//        int cnt = 0;
         // TODO : is the logic correct ? or just eval the first element
         for (int i = 0; i < arr.length; i++) {
             boolean tmp = false;
             if (arr[i] != null && arr[i].length > 1)
-                tmp = arr[i][0];
-//                for (boolean j : arr[i])
-//                    tmp |= j;
+                for (int j = 0; j < arr[i].length - 1; j++)
+                    tmp |= arr[i][j];
             if (tmp) {
                 str.append("\n").append(i);
-                cnt++;
+//                cnt++;
             }
         }
 //        str.insert(0, "\n" + cnt);

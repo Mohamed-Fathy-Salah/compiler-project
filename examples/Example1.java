@@ -11,6 +11,44 @@ public class Example1 {
                 x--;
             }
         }
+
+        int n = 6;
+        for (int i = 0 ;i<n;i++) {
+            green(i, 5, 11);
+            orange(i + 6, 5, 11);
+            red(5 , 6, 11);
+        }
+
+    }
+
+    public static void green (int i, int j, int k) {
+        if (i >= 5 || j <= 5 || k < 11) {
+            System.out.println("one");
+        } else if (i < 5 || ( j < 5 && k > 5) || k < 11) {
+            System.out.println("two");
+        } else {
+            System.out.println("three");
+        }
+    }
+
+    public static void orange (int i, int j, int k) {
+        if (i > 5 || j <= 5 || k < 11) {
+            System.out.println("one");
+        } else if (i < 5 || ( j < 5 && k > 5) || k < 11) {
+            System.out.println("two");
+        } else {
+            System.out.println("three");
+        }
+    }
+
+    public static void red (int i, int j, int k) {
+        if (i > 5 || j <= 5 || k < 11) {
+            System.out.println("one");
+        } else if (i < 5 || ( j < 5 && k > 5) || k < 11) {
+            System.out.println("two");
+        } else {
+            System.out.println("three");
+        }
     }
 
     public int getLength() {
