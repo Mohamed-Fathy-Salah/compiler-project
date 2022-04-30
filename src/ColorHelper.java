@@ -1,17 +1,29 @@
+/**
+ *
+ */
 public class ColorHelper {
     private static ColorHelper instance = null;
     private boolean[][] arr;
 
+    /**
+     *
+     */
     private ColorHelper() {
         arr = new boolean[10][];
     }
 
+    /**
+     *
+     */
     public static ColorHelper getInstance() {
         if (instance == null)
             instance = new ColorHelper();
         return instance;
     }
 
+    /**
+     *
+     */
     public void eval(int blockNumber, boolean[] expr) {
         if (arr.length <= blockNumber) {
             boolean[][] newArr = new boolean[blockNumber * 2][];
@@ -25,6 +37,9 @@ public class ColorHelper {
                 arr[blockNumber][i] &= expr[i];
     }
 
+    /**
+     *
+     */
     public String getOrange() {
         StringBuilder str = new StringBuilder();
         int cnt = 0;
