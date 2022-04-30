@@ -50,10 +50,9 @@ class FileWrite {
     public void write (String path, String str) {
         try {
             FileOutputStream outputFile = new FileOutputStream(path, false);
-            BufferedOutputStream buffer = new BufferedOutputStream(outputFile);
-            buffer.write(str.getBytes());
-            buffer.flush();
-            buffer.close();
+            outputFile.write(str.getBytes());
+            outputFile.flush();
+            outputFile.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
