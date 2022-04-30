@@ -10,10 +10,11 @@ public class Example1 {
             if (x == 1) {
                 x--;
             }
+            x++;
         }
 
         int n = 6;
-        for (int i = 0 ;i<n;i++) {
+        for (int i = 0 ;i< n;i++) {
             green(i, 5, 11);
             orange(i + 6, 5, 11);
             red(5 , 6, 11);
