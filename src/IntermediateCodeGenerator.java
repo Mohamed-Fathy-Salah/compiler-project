@@ -42,8 +42,8 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     }
 
     /**
-     *
-     * @param ctx
+     * injects code for appending file after `{` for any block except `if, while, do-while, for`.
+     * @param ctx : the rule that the parser is walking into.
      */
     @Override
     public void enterBlock(JavaParser.BlockContext ctx) {
@@ -54,8 +54,8 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     }
 
     /**
-     *
-     * @param ctx
+     * injects code for appending file and code coloring for `if, while, do-while, for`.
+     * @param ctx : the rule that the parser is walking into.
      */
     @Override
     public void enterStatement(JavaParser.StatementContext ctx) {
@@ -86,8 +86,8 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     }
 
     /**
-     *
-     * @param ctx
+     * injects code for appending file and coloring for `else` statements.
+     * @param ctx : the rule that the parser is walking into.
      */
     @Override
     public void exitStatement(JavaParser.StatementContext ctx) {
@@ -103,8 +103,8 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     }
 
     /**
-     *
-     * @param ctx
+     * injects code for appending file and coloring for cases in switch statements.
+     * @param ctx : the rule that the parser is walking into.
      */
     @Override
     public void enterSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {
@@ -115,8 +115,8 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     }
 
     /**
-     *
-     * @param ctx
+     * injects code that will write all orange and green blocks to a file.
+     * @param ctx : the rule that the parser is walking into.
      */
     @Override
     public void exitMethodDeclaration(JavaParser.MethodDeclarationContext ctx) {

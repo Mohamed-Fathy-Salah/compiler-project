@@ -1,5 +1,7 @@
 /**
- *
+ * this class handles code coloring, after every statement use the function eval()
+ * that will update the states of the blocks, then at the end of the main use the
+ * function getOrange() that will return all orange blocks.
  */
 public class ColorHelper {
     private static ColorHelper instance = null;
@@ -16,6 +18,7 @@ public class ColorHelper {
 
     /**
      *
+     * @return : singleton instance of {@link ColorHelper}
      */
     public static ColorHelper getInstance() {
         if (instance == null)
@@ -23,6 +26,12 @@ public class ColorHelper {
         return instance;
     }
 
+    /**
+     * checks if any element is true except the last element
+     * then the type is orange else the type is green.
+     * @param expr : array of expressions.
+     * @return : the type of the expression (orange, green).
+     */
     private int getType(boolean[] expr) {
         for (int i = 0;i<expr.length - 1;i++)
             if (expr[i])
@@ -32,6 +41,8 @@ public class ColorHelper {
 
     /**
      *
+     * @param blockNumber :
+     * @param expr :
      */
     public void eval(int blockNumber, boolean[] expr) {
         if (arr.length <= blockNumber) {
