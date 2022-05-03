@@ -3,13 +3,15 @@
  */
 public class ColorHelper {
     private static ColorHelper instance = null;
-    private boolean[] arr;
+    private final static int ORANGE = 1;
+    private final static int GREEN = 2;
+    private int[] arr;
 
     /**
      *
      */
     private ColorHelper() {
-        arr = new boolean[10];
+        arr = new int[10];
     }
 
     /**
@@ -21,11 +23,11 @@ public class ColorHelper {
         return instance;
     }
 
-    private boolean isOrange(boolean[] expr) {
+    private int getType(boolean[] expr) {
         for (int i = 0;i<expr.length - 1;i++)
             if (expr[i])
-                return true;
-        return false;
+                return ORANGE;
+        return GREEN;
     }
 
     /**
@@ -33,11 +35,14 @@ public class ColorHelper {
      */
     public void eval(int blockNumber, boolean[] expr) {
         if (arr.length <= blockNumber) {
-            boolean[] newArr = new boolean[blockNumber * 2];
+            int[] newArr = new int[blockNumber * 2];
             System.arraycopy(arr, 0, newArr, 0, arr.length);
             arr = newArr;
         }
-        arr[blockNumber] &= isOrange(expr);
+        if (getType(expr) == GREEN)
+            arr[blockNumber] = GREEN;
+        else if (arr[blockNumber] != GREEN)
+            arr[blockNumber] = ORANGE;
     }
 
     /**
@@ -48,7 +53,7 @@ public class ColorHelper {
 //        int cnt = 0;
         // TODO : is the logic correct ? or just eval the first element
         for (int i = 0; i < arr.length; i++) {
-            if (arr[i]) {
+            if (arr[i] == ORANGE) {
                 str.append("\n").append(i);
 //                cnt++;
             }

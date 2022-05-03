@@ -32,7 +32,20 @@ public class Example7 {
 
         foo(5);
 
-        for (int i = 0 ;i<5 || (i < 5 && i == 0);i++)
+        int i = 0,j = 0;
+        while (i < 3 || j < 4) {
+            i++;
+            j++;
+        }
+
+        i = 0; j = 0;
+        while (i < 3 || j < 2) {
+            i++;
+            j++;
+        }
+
+
+        for (i = 0 ;i < 5 || (i < 5 && i == 0);i++)
             System.out.println("blah");
 
         int y = 4;
