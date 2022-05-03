@@ -3,13 +3,15 @@
  */
 public class ColorHelper {
     private static ColorHelper instance = null;
-    private boolean[][] arr;
+    private final static int ORANGE = 1;
+    private final static int GREEN = 2;
+    private int[] arr;
 
     /**
      *
      */
     private ColorHelper() {
-        arr = new boolean[10][];
+        arr = new int[10];
     }
 
     /**
@@ -21,25 +23,26 @@ public class ColorHelper {
         return instance;
     }
 
+    private int getType(boolean[] expr) {
+        for (int i = 0;i<expr.length - 1;i++)
+            if (expr[i])
+                return ORANGE;
+        return GREEN;
+    }
+
     /**
      *
      */
     public void eval(int blockNumber, boolean[] expr) {
         if (arr.length <= blockNumber) {
-            boolean[][] newArr = new boolean[blockNumber * 2][];
+            int[] newArr = new int[blockNumber * 2];
             System.arraycopy(arr, 0, newArr, 0, arr.length);
             arr = newArr;
         }
-        if (arr[blockNumber] == null)
-            arr[blockNumber] = expr.clone();
-        else
-            for (int i = 0; i < expr.length; i++) {
-                if (arr[blockNumber][i] ^ expr[i]) {
-                    for (int j = i; j < expr.length; j++)
-                        arr[blockNumber][j] = false;
-                    return;
-                }
-            }
+        if (getType(expr) == GREEN)
+            arr[blockNumber] = GREEN;
+        else if (arr[blockNumber] != GREEN)
+            arr[blockNumber] = ORANGE;
     }
 
     /**
@@ -50,11 +53,7 @@ public class ColorHelper {
 //        int cnt = 0;
         // TODO : is the logic correct ? or just eval the first element
         for (int i = 0; i < arr.length; i++) {
-            boolean tmp = false;
-            if (arr[i] != null && arr[i].length > 1)
-                for (int j = 0; j < arr[i].length - 1; j++)
-                    tmp |= arr[i][j];
-            if (tmp) {
+            if (arr[i] == ORANGE) {
                 str.append("\n").append(i);
 //                cnt++;
             }
