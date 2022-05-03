@@ -21,29 +21,31 @@ public class Example7 {
                 System.out.println(7);
                 break;
 
-            case 8: {
+            case 8:
                 x++;
                 System.out.println(8);
                 break;
-            }
-
-            default: {
+            default:
                 System.out.println("not found");
-            }
 
         }
 
         foo(5);
 
+        for (int i = 0 ;i<5 || (i < 5 && i == 0);i++)
+            System.out.println("blah");
+
         int y = 4;
         int z = 2;
         x = 5;
-        if (y == 4)
-            if (x == 5)
-                if (z == 3)
+        if (y == 4 || y == 3 || y == 2)
+            if (x == 5 || x == 2)
+                if (z == 3) {
                     System.out.println("all");
+                }
                 else
                     System.out.print("last else");
+
     }
 
     public static void foo(int i) {
