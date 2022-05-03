@@ -14,7 +14,7 @@ class FileWrite {
     /**
      * Checks if already there is an instance will be returned otherwise a new one will be created
      * to make sure that only one exists.
-     * @return
+     * @return instance of class
      */
     public static FileWrite getInstance() {
         if (instance == null)

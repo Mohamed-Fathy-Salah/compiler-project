@@ -9,19 +9,29 @@ public class IntermediateCodeGenerator extends JavaParserBaseListener {
     private final TokenStreamRewriter rewriter;
     private int blockNumber = 0;
 
+    /**
+     *
+     * @param rewriter : rewriter for the token stream (input file)
+     * @param fileName : generated file name
+     */
     public IntermediateCodeGenerator(TokenStreamRewriter rewriter, String fileName) {
         this.rewriter = rewriter;
         this.fileName = fileName;
     }
 
+    /**
+     *
+     * @return : code to be injected for file append
+     */
     private String injectAppendFile() {
         return "\nFileWrite.getInstance().append(" + blockNumber++ + ");\n";
     }
 
     /**
-     *
-     * @param expr
-     * @return
+     * splits the expression(on `||` only) string to array of expressions
+     * that will be sent to the injected code
+     * @param expr : the expressions of the statement
+     * @return : code to be injected for coloring the block
      */
     private String injectColor(String expr) {
         String[] expressions = expr.split("\\|\\|");
