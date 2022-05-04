@@ -8,8 +8,16 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Scanner;
 
+/**
+ * Driver for code generation
+ */
 public class Main {
     public static HashSet<Integer> greenBlocks, orangeBlocks;
+
+    /**
+     * generate IR, run that code, the output of that code is read,
+     * generate HTML with appropriate colors, run HTML in firefox.
+     */
     public static void main(String[] args) throws IOException {
         String fileName = "Example7";
         String fileNameExt = fileName + ".java";
@@ -46,6 +54,10 @@ public class Main {
         r.exec(new String[]{"firefox", htmlFolder + fileName + ".html"});
     }
 
+    /**
+     * read content of output file of generated IR, fills greenBlocks, orangeBlocks hashsets.
+     * @param fileName input file name without extension.
+     */
     public static void fileRead(String fileName){
         greenBlocks = new HashSet<Integer>();
         orangeBlocks = new HashSet<Integer>();

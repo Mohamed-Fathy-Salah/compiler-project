@@ -16,8 +16,8 @@ public class HtmlGenerator extends JavaParserBaseListener {
      * This is the class constructor
      *
      * @param rewriter
-     * @param greenBlocks : Hashset contains the indices of the blocks that will be colored with green
-     * @param orangeBlocks : Hashset contains the indices of the blocks that will be colored with orange
+     * @param greenBlocks Hashset contains the indices of the blocks that will be colored with green
+     * @param orangeBlocks Hashset contains the indices of the blocks that will be colored with orange
      */
 
     public HtmlGenerator(TokenStreamRewriter rewriter, HashSet<Integer> greenBlocks, HashSet<Integer> orangeBlocks) {
@@ -29,7 +29,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
     /**
      * surround the context with html code with appropriate color ( red, green)
      *
-     * @param ctx : the rule that the parser is walking into.
+     * @param ctx the rule that the parser is walking into.
      *
      */
     private void injectHtml(ParserRuleContext ctx) {
@@ -41,8 +41,8 @@ public class HtmlGenerator extends JavaParserBaseListener {
     /**
      * surround the context with html code with given color ( red, green, orange)
      *
-     * @param ctx : the rule that the parser is walking into.
-     * @param color : the color that the block will take depending on its state in execution
+     * @param ctx the rule that the parser is walking into.
+     * @param color the color that the block will take depending on its state in execution
      */
     private void injectHtml(ParserRuleContext ctx, String color) {
         rewriter.insertBefore(ctx.start, "<span style=\"background:" + color + "\">");
@@ -51,7 +51,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
 
     /**
      * this method responsible for giving the background color for the whole page
-     * @param ctx : the rule that the parser is walking into.
+     * @param ctx the rule that the parser is walking into.
      */
     @Override
     public void enterCompilationUnit(JavaParser.CompilationUnitContext ctx) {
@@ -62,7 +62,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
     /**
      * this method inject the html for any block but if, while, do and for
      * other functions will take care of those blocks
-     * @param ctx : the rule that the parser is walking into.
+     * @param ctx the rule that the parser is walking into.
      */
     @Override
     public void enterBlock(JavaParser.BlockContext ctx) {
@@ -73,7 +73,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
 
     /**
      * this method inject html for if, while, do and for
-     * @param ctx : the rule that the parser is walking into.
+     * @param ctx the rule that the parser is walking into.
      */
     @Override
     public void enterStatement(JavaParser.StatementContext ctx) {
@@ -93,7 +93,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
 
     /**
      * this method handle the else statement
-     * @param ctx : the rule that the parser is walking into.
+     * @param ctx the rule that the parser is walking into.
      */
     @Override
     public void exitStatement(JavaParser.StatementContext ctx) {
@@ -107,7 +107,7 @@ public class HtmlGenerator extends JavaParserBaseListener {
 
     /**
      * this method is responsible for switch
-     * @param ctx : the rule that the parser is walking into.
+     * @param ctx the rule that the parser is walking into.
      */
     @Override
     public void enterSwitchBlockStatementGroup(JavaParser.SwitchBlockStatementGroupContext ctx) {

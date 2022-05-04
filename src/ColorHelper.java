@@ -18,7 +18,7 @@ public class ColorHelper {
 
     /**
      *
-     * @return : singleton instance of {@link ColorHelper}
+     * @return singleton instance of {@link ColorHelper}
      */
     public static ColorHelper getInstance() {
         if (instance == null)
@@ -29,8 +29,8 @@ public class ColorHelper {
     /**
      * checks if any element is true except the last element
      * then the type is orange else the type is green.
-     * @param expr : array of expressions of type boolean.
-     * @return : the type of the expression (orange, green).
+     * @param expr array of expressions of type boolean.
+     * @return the type of the expression (orange, green).
      */
     private int getType(boolean[] expr) {
         for (int i = 0;i<expr.length - 1;i++)
@@ -42,8 +42,8 @@ public class ColorHelper {
     /**
      * if expr is green then that block will be green always.
      * else if the block wasn't green then assign orange to it.
-     * @param blockNumber : the block number in the IR code.
-     * @param expr : array of expressions of type boolean.
+     * @param blockNumber the block number in the IR code.
+     * @param expr array of expressions of type boolean.
      */
     public void eval(int blockNumber, boolean[] expr) {
         if (arr.length <= blockNumber) {
@@ -59,7 +59,7 @@ public class ColorHelper {
 
     /**
      *
-     * @return : string containing all orange blocks (block on each line).
+     * @return string containing all orange blocks (block on each line).
      */
     public String getOrange() {
         StringBuilder str = new StringBuilder();

@@ -23,19 +23,19 @@ class FileWrite {
 
     /**
      * Appends a substring to the string to be written in the file
-     * @param str : the string to be appended
+     * @param str the string to be appended
      */
     public void append (String str) { this.str.append(str); }
 
     /**
      * covert integer to string and Append it to the string to be written in the file
-     * @param i : the integer to be appended
+     * @param i the integer to be appended
      */
     public void append (Integer i) { this.str.append(i.toString()).append("\n"); }
 
     /**
      * this method writes the string to the specified file.
-     * @param path : the file path
+     * @param path the file path
      */
     public void write (String path) {
         write(path, this.str.toString());
@@ -43,8 +43,8 @@ class FileWrite {
 
     /**
      * this method writes the string to the specified file.
-     * @param path : the file path
-     * @param str : the string to be written
+     * @param path the file path
+     * @param str the string to be written
      */
     public void write (String path, String str) {
         try {
