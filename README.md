@@ -13,8 +13,10 @@
 - install intelliJ IDEA.
 - Install ANTLRv4. you can install ANTLR from IDEA's plugin manager.
 - Import antlr runtime jar [Download](https://repo1.maven.org/maven2/org/antlr/antlr4/4.9.3/antlr4-4.9.3-complete.jar).
+
 ## idea
-in our project (this repo), we build (overwrite) intermediate code generator that helps in detect blocks of code in the input program file then statically test if this blocks will work or not then produce html file as output that color this block by green if this block will works or red if not.
+in our project (this repo), we build code analyzer that helps in detect code blocks in the input java program file then statically test if this blocks will work or not then produce html file as output that highlighted this blocks by green if this blocks will works or red if not. 
+there is a third case in branches (if/else/for/while) which has more than one condition in OR (||) expression, and their some condition will be false and some be true then highlight the boolean expression by yellow but the block will be  highlighted by green as it will excuted.
 
 ## samples
 ![sample1](samples/sample1.jfif)
