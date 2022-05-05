@@ -18,6 +18,8 @@ in our project (this repo), we build (overwrite) intermediate code generator tha
 
 ## samples
 ![sample1](samples/sample1.jfif)
+![sample2](samples/sample2.jfif)
+![sample1](samples/sample3.jfif)
 
 ## how to use
 1. build project as jar file ( save as out/artifacts/project_jar/project.jar ).
