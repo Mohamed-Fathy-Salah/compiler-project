@@ -1,3 +1,7 @@
+<h1 align="center">ANTLRv4 Compiler</h1>
+
+## Table of contents
+
 - [Quick start](#Quick-start)
 - [idea](#idea)
 - [samples](#samples)
