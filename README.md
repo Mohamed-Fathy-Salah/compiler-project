@@ -12,7 +12,7 @@
 - Clone the repo: `git clone https://github.com/Mohamed-Fathy-Salah/compiler-project`
 - install intelliJ IDEA.
 - Install ANTLRv4. you can install ANTLR from IDEA's plugin manager.
-- Import antlr runtime jar.
+- Import antlr runtime jar [Download](https://repo1.maven.org/maven2/org/antlr/antlr4/4.9.2/antlr4-4.9.2-complete.jar).
 ## idea
 
 ## samples
