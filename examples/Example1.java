@@ -4,7 +4,7 @@ public class Example1 {
 
     public static void main(String[] args) {
         int x = 0;
-        if (x == 0) {
+        if (x == 0 || x == 2) {
             x++;
         } else {
             if (x == 1) {
@@ -15,7 +15,7 @@ public class Example1 {
 
         int n = 6;
         for (int i = 0 ;i< n;i++) {
-            green(i, 5, 11);
+            green(i, 5 + i, 10);
             orange(i + 6, 5, 11);
             red(5 , 6, 11);
         }

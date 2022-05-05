@@ -19,7 +19,12 @@ public class Main {
      * generate HTML with appropriate colors, run HTML in firefox.
      */
     public static void main(String[] args) throws IOException {
-        String fileName = "Example7";
+        String fileName = "Example1";
+        int runBlock = -1;
+        if (args.length == 2) {
+            fileName = "Example" + args[0];
+            runBlock = Integer.parseInt(args[1]);
+        }
         String fileNameExt = fileName + ".java";
         String intermediateFolder = "examples/intermediate/";
         String htmlFolder = "examples/html/";
@@ -31,34 +36,41 @@ public class Main {
         ParseTree tree = parser.compilationUnit();
         ParseTreeWalker walker = new ParseTreeWalker();
 
-        TokenStreamRewriter rewriter = new TokenStreamRewriter(tokens);
-        TokenStreamRewriter rewriter1 = new TokenStreamRewriter(tokens);
+        if (runBlock == -1 || runBlock == 0) {
+            TokenStreamRewriter rewriter = new TokenStreamRewriter(tokens);
+            walker.walk(new IntermediateCodeGenerator(rewriter, fileName), tree);
+            // write file
+            // TODO : write at run time not when program finishes
+            FileWrite.getInstance().write(intermediateFolder + fileNameExt, rewriter.getText());
+        }
 
-        walker.walk(new IntermediateCodeGenerator(rewriter, fileName), tree);
+        Runtime r = Runtime.getRuntime();
 
-        // write file
-        // TODO : write at run time not when program finishes
-        FileWrite.getInstance().write(intermediateFolder + fileNameExt, rewriter.getText());
-
-        // run file
-        Runtime r= Runtime.getRuntime();
-        r.exec(new String[]{"javac", "-d", intermediateFolder, "-cp", "src/", intermediateFolder + fileNameExt});
-        r.exec(new String[]{"java", "-cp", intermediateFolder, fileName});
-
-        fileRead(fileName);
-
-        walker.walk(new HtmlGenerator(rewriter1, greenBlocks, orangeBlocks), tree);
-        FileWrite.getInstance().write(htmlFolder + fileName + ".html", rewriter1.getText());
+        if (runBlock == -1 || runBlock == 1) {
+            // compile file
+            r.exec(new String[]{"javac", "-d", intermediateFolder, "-cp", "src/", intermediateFolder + fileNameExt});
+        }
+        if (runBlock == -1 || runBlock == 2) {
+            // run file
+            r.exec(new String[]{"java", "-cp", intermediateFolder, fileName});
+        }
 
         // run html in browser
-        r.exec(new String[]{"firefox", htmlFolder + fileName + ".html"});
+        if (runBlock == -1 || runBlock == 3) {
+            fileRead(fileName);
+            TokenStreamRewriter rewriter1 = new TokenStreamRewriter(tokens);
+            walker.walk(new HtmlGenerator(rewriter1, greenBlocks, orangeBlocks), tree);
+            FileWrite.getInstance().write(htmlFolder + fileName + ".html", rewriter1.getText());
+//            r.exec(new String[]{"firefox", htmlFolder + fileName + ".html"});
+        }
     }
 
     /**
      * read content of output file of generated IR, fills greenBlocks, orangeBlocks hashsets.
+     *
      * @param fileName input file name without extension.
      */
-    public static void fileRead(String fileName){
+    public static void fileRead(String fileName) {
         greenBlocks = new HashSet<Integer>();
         orangeBlocks = new HashSet<Integer>();
         try {

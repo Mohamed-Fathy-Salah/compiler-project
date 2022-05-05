@@ -5,6 +5,13 @@ public class Example7 {
 
     public static void main(String[] args) throws IOException {
         int x = 6;
+        if ( x == 5)
+            x = 6;
+        if ( x == 6)
+            x = 6;
+        if (x == 6 || x == 5)
+            x = 6;
+
         switch (x) {
             case 5:
                 x++;
@@ -33,7 +40,7 @@ public class Example7 {
         foo(5);
 
         int i = 0,j = 0;
-        while (i < 3 || j < 4) {
+        while (i < 3 || j < 2) {
             i++;
             j++;
         }
